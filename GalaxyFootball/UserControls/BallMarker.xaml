@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="GalaxyFootball.UserControls.BallMarker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="15" d:DesignWidth="15">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="15" VerticalAlignment="Top" Width="15" Source="/Resources/image/ball.png"/>
+    </Grid>
+</UserControl>

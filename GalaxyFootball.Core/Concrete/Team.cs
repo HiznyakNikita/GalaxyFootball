@@ -14,7 +14,7 @@ namespace GalaxyFootball.Core.Concrete
     public class Team : IObserver
     {
         private static Dictionary<PlayerType, Point> _defaultPlayersPositions;
-        private List<Player> _players;
+        private readonly List<Player> _players;
         public Team(TeamScheme scheme, ITeamStrategy strategy, List<Player> players)
         {
             TeamScheme = scheme;
@@ -30,11 +30,11 @@ namespace GalaxyFootball.Core.Concrete
             private set; 
         }
 
-        public IReadOnlyCollection<Player> Players
+        public List<Player> Players
         {
             get
             {
-                return _players.AsReadOnly();
+                return _players;
             }
         }
 

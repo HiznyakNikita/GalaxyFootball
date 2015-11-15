@@ -13,3 +13,11 @@ D:\C#\GalaxyFootball\GalaxyFootball\bin\Debug\GalaxyFootball.Core.dll
 D:\C#\GalaxyFootball\GalaxyFootball\bin\Debug\GalaxyFootball.Core.pdb
 D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\GalaxyFootball.exe
 D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\GalaxyFootball.pdb
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\UserControls\PlayerMarkerBlack.baml
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\UserControls\PlayerMarkerRed.baml
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\UserControls\PlayerMarkerBlack.g.cs
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\UserControls\PlayerMarkerRed.g.cs
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\GalaxyFootball_MarkupCompile.lref
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\UserControls\BallMarker.baml
+D:\C#\GalaxyFootball\GalaxyFootball\obj\Debug\UserControls\BallMarker.g.cs

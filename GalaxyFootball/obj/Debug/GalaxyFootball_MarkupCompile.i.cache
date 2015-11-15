@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\C#\GalaxyFootball\GalaxyFootball\App.xaml
-11151548125
+41794759756
 
-9-1112879843
+18-1217606466
 132126643194
-MainWindow.xaml;
+MainWindow.xaml;UserControls\BallMarker.xaml;UserControls\PlayerMarkerBlack.xaml;UserControls\PlayerMarkerRed.xaml;
 
-False
+True
 

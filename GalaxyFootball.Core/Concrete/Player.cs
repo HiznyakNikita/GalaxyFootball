@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GalaxyFootball.Core.Concrete
@@ -12,7 +13,8 @@ namespace GalaxyFootball.Core.Concrete
     public class Player
     {
         private Playground _playground;
-
+        private Thread _thread;
+        private Point _position;
 
         public Player(string name, PlayerType type, Playground playground)
         {
@@ -31,8 +33,35 @@ namespace GalaxyFootball.Core.Concrete
 
         public Point Position
         {
-            get;
-            private set;
+            get
+            {
+                return _position;
+            }
+            private set
+            {
+                if (value.X < 20 || value.Y < 20)
+                {
+                    if (value.X < 20)
+                        _position.X = 20;
+                    else
+                        _position.X = value.X;
+                    if (value.Y < 20)
+                        _position.Y = 20;
+                    else
+                        _position.Y = value.Y;
+                }
+                else
+                {
+                    if (value.Y > 680)
+                        _position.Y = 680;
+                    else
+                        _position.Y = value.Y;
+                    if (value.X > 1030)
+                        _position.X = 1030;
+                    else
+                        _position.X = value.X;
+                }
+            }
         }
 
         public Point StartPosition
@@ -57,17 +86,18 @@ namespace GalaxyFootball.Core.Concrete
 
         public void Update(ITeamStrategy strategy)
         {
+            _thread = new Thread(new ParameterizedThreadStart(ChangePosition));
             ChangePosition(strategy);
         }
 
-        private void ChangePosition(ITeamStrategy strategy)
+        private void ChangePosition(object strategy)
         {
-            Position = strategy.ChangePlayerPosition(this);
+            Position = ((ITeamStrategy)strategy).ChangePlayerPosition(this);
         }
 
         public void SetStartPosition(Point position)
         {
-            Position = StartPosition = position;
+            _position = StartPosition = position;
         }
     }
 }

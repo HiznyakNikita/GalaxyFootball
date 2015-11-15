@@ -1,11 +1,13 @@
 ﻿using GalaxyFootball.Core.Concrete;
 using GalaxyFootball.Core.Concrete.Helper.Enums;
+using GalaxyFootball.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,15 +27,15 @@ namespace GalaxyFootball
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowVM _model;
         public MainWindow()
         {
-            InitializeComponent();
             PlaygroundZone zone1 = new PlaygroundZone();
             zone1.Id = 1;
             zone1.LeftBottom = new GalaxyFootball.Core.Concrete.Helper.Point(0, 0);
             zone1.LeftTop = new GalaxyFootball.Core.Concrete.Helper.Point(0, 233);
             zone1.RightBottom = new GalaxyFootball.Core.Concrete.Helper.Point(350, 0);
-            zone1.RightTop = new GalaxyFootball.Core.Concrete.Helper.Point(300, 233);
+            zone1.RightTop = new GalaxyFootball.Core.Concrete.Helper.Point(350, 233);
             zone1.Center = new GalaxyFootball.Core.Concrete.Helper.Point(175, 116);
             zone1.Category = Core.Concrete.Helper.Enums.PlaygroundZoneCategory.DefenderZone;
 
@@ -166,58 +168,89 @@ namespace GalaxyFootball
             {
             }
 
+            this.DataContext = _model = new MainWindowVM();
+            (this.DataContext as MainWindowVM).PlayerPositionsChanged += MainWindow_PlayerPositionsChanged;
+            InitializeComponent();
+            ChangePlayersPositions();
+        }
 
-            Dictionary<PlayerType, GalaxyFootball.Core.Concrete.Helper.Point> playersDefaultPositions451Away = new Dictionary<PlayerType, GalaxyFootball.Core.Concrete.Helper.Point>();
-            //4-5-1 home
-            playersDefaultPositions451Away.Add(PlayerType.GoalkeeperAway, new GalaxyFootball.Core.Concrete.Helper.Point(992, 349));
-            playersDefaultPositions451Away.Add(PlayerType.LeftDefenderAway, new GalaxyFootball.Core.Concrete.Helper.Point(875, 116));
-            playersDefaultPositions451Away.Add(PlayerType.CentralDefenderAwayLeft, new GalaxyFootball.Core.Concrete.Helper.Point(875, 407));
-            playersDefaultPositions451Away.Add(PlayerType.CentralDefenderAwayRight, new GalaxyFootball.Core.Concrete.Helper.Point(875, 291));
-            playersDefaultPositions451Away.Add(PlayerType.RightDefenderAway, new GalaxyFootball.Core.Concrete.Helper.Point(875, 582));
-            playersDefaultPositions451Away.Add(PlayerType.DefensiveMidfielderAway, new GalaxyFootball.Core.Concrete.Helper.Point(612, 349));
-            playersDefaultPositions451Away.Add(PlayerType.CentralMidfielderAway, new GalaxyFootball.Core.Concrete.Helper.Point(525, 349));
-            playersDefaultPositions451Away.Add(PlayerType.LeftMidfielderAway, new GalaxyFootball.Core.Concrete.Helper.Point(525, 116));
-            playersDefaultPositions451Away.Add(PlayerType.RightMidfielderAway, new GalaxyFootball.Core.Concrete.Helper.Point(525, 582));
-            playersDefaultPositions451Away.Add(PlayerType.AttackMidfielderAway, new GalaxyFootball.Core.Concrete.Helper.Point(351, 349));
-            playersDefaultPositions451Away.Add(PlayerType.CentralForwardAway, new GalaxyFootball.Core.Concrete.Helper.Point(175, 349));
+        void MainWindow_PlayerPositionsChanged(object sender, EventArgs e)
+        {
+            ChangePlayersPositions();
+        }
 
-            try
-            {
-                using (Stream stream = File.Open("playersDefaultPositions451Away.bin", FileMode.Create))
-                {
-                    BinaryFormatter bin = new BinaryFormatter();
-                    bin.Serialize(stream, playersDefaultPositions451Away);
-                }
-            }
-            catch (IOException)
-            {
-            }
+        private void ChangePlayersPositions()
+        {
+            Canvas.SetLeft(this.ballMarker, _model.Game.Ball.Position.X);
+            Canvas.SetTop(ballMarker, _model.Game.Ball.Position.Y);
+            Canvas.SetLeft(this.playerHomeMarker1, _model.Game.TeamHome.Players[0].Position.X);
+            Canvas.SetTop(playerHomeMarker1, _model.Game.TeamHome.Players[0].Position.Y);
+            Canvas.SetLeft(playerHomeMarker2, _model.Game.TeamHome.Players[1].Position.X);
+            Canvas.SetTop(playerHomeMarker2, _model.Game.TeamHome.Players[1].Position.Y);
+            Canvas.SetLeft(playerHomeMarker3, _model.Game.TeamHome.Players[2].Position.X);
+            Canvas.SetTop(playerHomeMarker3, _model.Game.TeamHome.Players[2].Position.Y);
+            Canvas.SetLeft(playerHomeMarker4, _model.Game.TeamHome.Players[3].Position.X);
+            Canvas.SetTop(playerHomeMarker4, _model.Game.TeamHome.Players[3].Position.Y);
+            Canvas.SetLeft(playerHomeMarker5, _model.Game.TeamHome.Players[4].Position.X);
+            Canvas.SetTop(playerHomeMarker5, _model.Game.TeamHome.Players[4].Position.Y);
+            Canvas.SetLeft(playerHomeMarker6, _model.Game.TeamHome.Players[5].Position.X);
+            Canvas.SetTop(playerHomeMarker6, _model.Game.TeamHome.Players[5].Position.Y);
+            Canvas.SetLeft(playerHomeMarker7, _model.Game.TeamHome.Players[6].Position.X);
+            Canvas.SetTop(playerHomeMarker7, _model.Game.TeamHome.Players[6].Position.Y);
+            Canvas.SetLeft(playerHomeMarker8, _model.Game.TeamHome.Players[7].Position.X);
+            Canvas.SetTop(playerHomeMarker8, _model.Game.TeamHome.Players[7].Position.Y);
+            Canvas.SetLeft(playerHomeMarker9, _model.Game.TeamHome.Players[8].Position.X);
+            Canvas.SetTop(playerHomeMarker9, _model.Game.TeamHome.Players[8].Position.Y);
+            Canvas.SetLeft(playerHomeMarker10, _model.Game.TeamHome.Players[9].Position.X);
+            Canvas.SetTop(playerHomeMarker10, _model.Game.TeamHome.Players[9].Position.Y);
+            Canvas.SetLeft(playerHomeMarker11, _model.Game.TeamHome.Players[10].Position.X);
+            Canvas.SetTop(playerHomeMarker11, _model.Game.TeamHome.Players[10].Position.Y);
 
-            Dictionary<PlayerType, GalaxyFootball.Core.Concrete.Helper.Point> playersDefaultPositions451Home = new Dictionary<PlayerType, GalaxyFootball.Core.Concrete.Helper.Point>();
-            //4-5-1 home
-            playersDefaultPositions451Home.Add(PlayerType.GoalkeeperHome, new GalaxyFootball.Core.Concrete.Helper.Point(58, 349));
-            playersDefaultPositions451Home.Add(PlayerType.LeftDefenderHome, new GalaxyFootball.Core.Concrete.Helper.Point(175, 582));
-            playersDefaultPositions451Home.Add(PlayerType.CentralDefenderHomeLeft, new GalaxyFootball.Core.Concrete.Helper.Point(175, 407));
-            playersDefaultPositions451Home.Add(PlayerType.CentralDefenderHomeRight, new GalaxyFootball.Core.Concrete.Helper.Point(175, 291));
-            playersDefaultPositions451Home.Add(PlayerType.RightDefenderHome, new GalaxyFootball.Core.Concrete.Helper.Point(175, 116));
-            playersDefaultPositions451Home.Add(PlayerType.DefensiveMidfielderHome, new GalaxyFootball.Core.Concrete.Helper.Point(393, 349));
-            playersDefaultPositions451Home.Add(PlayerType.CentralMidfielderHome, new GalaxyFootball.Core.Concrete.Helper.Point(500, 349));
-            playersDefaultPositions451Home.Add(PlayerType.LeftMidfielderHome, new GalaxyFootball.Core.Concrete.Helper.Point(525, 582));
-            playersDefaultPositions451Home.Add(PlayerType.RightMidfielderHome, new GalaxyFootball.Core.Concrete.Helper.Point(525, 116));
-            playersDefaultPositions451Home.Add(PlayerType.AttackMidfielderHome, new GalaxyFootball.Core.Concrete.Helper.Point(701, 349));
-            playersDefaultPositions451Home.Add(PlayerType.CentralForwardHome, new GalaxyFootball.Core.Concrete.Helper.Point(875, 349));
+            Canvas.SetLeft(playerAwayMarker1, _model.Game.TeamAway.Players[0].Position.X);
+            Canvas.SetTop(playerAwayMarker1, _model.Game.TeamAway.Players[0].Position.Y);
+            Canvas.SetLeft(playerAwayMarker2, _model.Game.TeamAway.Players[1].Position.X);
+            Canvas.SetTop(playerAwayMarker2, _model.Game.TeamAway.Players[1].Position.Y);
+            Canvas.SetLeft(playerAwayMarker3, _model.Game.TeamAway.Players[2].Position.X);
+            Canvas.SetTop(playerAwayMarker3, _model.Game.TeamAway.Players[2].Position.Y);
+            Canvas.SetLeft(playerAwayMarker4, _model.Game.TeamAway.Players[3].Position.X);
+            Canvas.SetTop(playerAwayMarker4, _model.Game.TeamAway.Players[3].Position.Y);
+            Canvas.SetLeft(playerAwayMarker5, _model.Game.TeamAway.Players[4].Position.X);
+            Canvas.SetTop(playerAwayMarker5, _model.Game.TeamAway.Players[4].Position.Y);
+            Canvas.SetLeft(playerAwayMarker6, _model.Game.TeamAway.Players[5].Position.X);
+            Canvas.SetTop(playerAwayMarker6, _model.Game.TeamAway.Players[5].Position.Y);
+            Canvas.SetLeft(playerAwayMarker7, _model.Game.TeamAway.Players[6].Position.X);
+            Canvas.SetTop(playerAwayMarker7, _model.Game.TeamAway.Players[6].Position.Y);
+            Canvas.SetLeft(playerAwayMarker8, _model.Game.TeamAway.Players[7].Position.X);
+            Canvas.SetTop(playerAwayMarker8, _model.Game.TeamAway.Players[7].Position.Y);
+            Canvas.SetLeft(playerAwayMarker9, _model.Game.TeamAway.Players[8].Position.X);
+            Canvas.SetTop(playerAwayMarker9, _model.Game.TeamAway.Players[8].Position.Y);
+            Canvas.SetLeft(playerAwayMarker10, _model.Game.TeamAway.Players[9].Position.X);
+            Canvas.SetTop(playerAwayMarker10, _model.Game.TeamAway.Players[9].Position.Y);
+            Canvas.SetLeft(playerAwayMarker11, _model.Game.TeamAway.Players[10].Position.X);
+            Canvas.SetTop(playerAwayMarker11, _model.Game.TeamAway.Players[10].Position.Y);
+        }
 
-            try
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Random r = new Random();
+            for (int i = 0; i < 50; i++)
             {
-                using (Stream stream = File.Open("playersDefaultPositions451Home.bin", FileMode.Create))
-                {
-                    BinaryFormatter bin = new BinaryFormatter();
-                    bin.Serialize(stream, playersDefaultPositions451Home);
-                }
+                _model.Game.Ball.Position = new GalaxyFootball.Core.Concrete.Helper.Point(_model.Game.Ball.Position.X + r.Next(-3, 3) * 2, _model.Game.Ball.Position.Y + r.Next(-3, 3) * 2);
+                Thread.Sleep(500);
             }
-            catch (IOException)
+        }
+
+        private async void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Random r = new Random();
+            for (int i = 0; i < 50000; i++)
             {
+                _model.Game.Ball.Position = new GalaxyFootball.Core.Concrete.Helper.Point(_model.Game.Ball.Position.X + r.Next(-3, 3) * 2, _model.Game.Ball.Position.Y + r.Next(-3, 3) * 2);
+                await Task.Delay(10);
             }
+            //Random r = new Random();
+            //Canvas.SetTop(ballMarker, r.Next(100, 400));
+            //Canvas.SetLeft(ballMarker, r.Next(100, 400));
         }
     }
 }

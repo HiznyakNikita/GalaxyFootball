@@ -25,7 +25,7 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? ++newPosition.X : --newPosition.X;
                 newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? ++newPosition.Y : --newPosition.Y;
             }
-            else
+            else if(player.Type != PlayerType.GoalkeeperAway && player.Type != PlayerType.GoalkeeperHome)
             {
                 foreach (var z in GameEngine.CurrentGame.Playground.Zones)
                 {
@@ -37,11 +37,16 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                             newPosition.X = player.Position.X < currentPlayerZone.HorizontalNeighbour.Center.X ? ++newPosition.X : --newPosition.X;
                             newPosition.Y = player.Position.Y < currentPlayerZone.HorizontalNeighbour.Center.Y ? ++newPosition.Y : --newPosition.Y;
                         }
-                        //if ball in vertical parallel zone => go to neighbour vertical zone center
-                        else if (z.Category == currentPlayerZone.VerticalNeighbour.Category)
+                        //if ball in vertical parallel zone => go to neighbour vertical zone center. DELETED BECAUSE UNREAL SITUATIONS
+                        //else if (z.Category == currentPlayerZone.VerticalNeighbour.Category)
+                        //{
+                        //    newPosition.X = player.Position.X < currentPlayerZone.VerticalNeighbour.Center.X ? ++newPosition.X : --newPosition.X;
+                        //    newPosition.Y = player.Position.Y < currentPlayerZone.VerticalNeighbour.Center.Y ? ++newPosition.Y : --newPosition.Y;
+                        //}
+                        else
                         {
-                            newPosition.X = player.Position.X < currentPlayerZone.VerticalNeighbour.Center.X ? ++newPosition.X : --newPosition.X;
-                            newPosition.Y = player.Position.Y < currentPlayerZone.VerticalNeighbour.Center.Y ? ++newPosition.Y : --newPosition.Y;
+                            newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? ++newPosition.X : --newPosition.X;
+                            newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? ++newPosition.Y : --newPosition.Y;
                         }
                     }
                 }

@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="GalaxyFootball.UserControls.PlayerMarkerRed"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="25">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="25" Opacity="30" VerticalAlignment="Top" Width="25" Source="/Resources/image/circle_red_30_30.png"/>
+        <Label x:Name="lblNumber" Content="{Binding Number}" Foreground="White"  FontSize="5" VerticalAlignment="Top" Height="17" Margin="6,4,3,0"/>
+    </Grid>
+</UserControl>

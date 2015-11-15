@@ -140,8 +140,8 @@ namespace GalaxyFootball.Core.Concrete
 
         public bool CheckForZoneIntersection(Point pointForCheck)
         {
-            if((pointForCheck.X < _rightTop.X && pointForCheck.X > _leftTop.X)
-                && (pointForCheck.Y > _leftBottom.Y && pointForCheck.Y < _leftTop.Y))
+            if((pointForCheck.X <= _rightTop.X && pointForCheck.X >= _leftTop.X)
+                && (pointForCheck.Y >= _leftBottom.Y && pointForCheck.Y <= _leftTop.Y))
             {
                 return true;
             }
