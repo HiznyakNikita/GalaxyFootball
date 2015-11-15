@@ -9,24 +9,19 @@ using System.Threading.Tasks;
 
 namespace GalaxyFootball.Core.Concrete
 {
-    public class Player : IObserver
+    public class Player
     {
-        public Player(Ball ball, string name, PlayerType type, PlaygroundZone zone)
+        private Playground _playground;
+
+
+        public Player(string name, PlayerType type, Playground playground)
         {
-            Ball = ball;
             Name = name;
             Type = type;
-            DefaultZone = zone;
-            SetStartPosition(Type);
+            _playground = playground;
         }
 
         #region Properties
-
-        public Ball Ball
-        {
-            get;
-            private set;
-        }
 
         public string Name
         {
@@ -55,22 +50,24 @@ namespace GalaxyFootball.Core.Concrete
         public PlaygroundZone DefaultZone
         {
             get;
-            private set;
+            set;
         }
 
         #endregion
 
         public void Update(ITeamStrategy strategy)
         {
-            ChangeMyPosition(strategy);
+            ChangePosition(strategy);
         }
 
-        private void ChangeMyPosition(ITeamStrategy strategy)
+        private void ChangePosition(ITeamStrategy strategy)
         {
-            Position = strategy.ChangePlayerPosition(Type, Position, DefaultZone, Ball);
+            Position = strategy.ChangePlayerPosition(this);
         }
 
-        private void SetStartPosition(PlayerType type)
-        { }
+        public void SetStartPosition(Point position)
+        {
+            Position = StartPosition = position;
+        }
     }
 }

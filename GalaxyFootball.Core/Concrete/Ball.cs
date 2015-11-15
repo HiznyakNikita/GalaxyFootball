@@ -10,12 +10,13 @@ namespace GalaxyFootball.Core
 {
     public class Ball : ISubject
     {
-        private readonly List<IObserver> _observers;
+        private readonly List<IObserver> _observers = new List<IObserver>();
         private Point _position;
 
         public Ball()
         {
-
+            //set start position - playground center
+            _position = new Point(525, 349);
         }
 
         #region Properties

@@ -1,0 +1,9 @@
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\bin\Debug\GalaxyFootball.Test.dll
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\bin\Debug\GalaxyFootball.Test.pdb
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\obj\Debug\GalaxyFootball.Test.csprojResolveAssemblyReference.cache
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\obj\Debug\GalaxyFootball.Test.dll
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\obj\Debug\GalaxyFootball.Test.pdb
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\bin\Debug\GalaxyFootball.Core.dll
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\bin\Debug\GalaxyFootball.exe
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\bin\Debug\GalaxyFootball.Core.pdb
+D:\C#\GalaxyFootball\GalaxyFootball\GalaxyFootball.Test\bin\Debug\GalaxyFootball.pdb

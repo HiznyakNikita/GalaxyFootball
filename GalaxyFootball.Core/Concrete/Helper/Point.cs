@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GalaxyFootball.Core.Concrete.Helper
 {
+    [Serializable]
     public class Point
     {
         public Point()

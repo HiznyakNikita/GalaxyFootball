@@ -1,4 +1,5 @@
 ﻿using GalaxyFootball.Core.Concrete.Helper;
+using GalaxyFootball.Core.Concrete.Helper.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace GalaxyFootball.Core.Concrete
 {
+    [Serializable]
     public class PlaygroundZone
     {
         private int _id;
@@ -15,6 +17,9 @@ namespace GalaxyFootball.Core.Concrete
         private Point _leftBottom;
         private Point _rightBottom;
         private Point _center;
+        private PlaygroundZoneCategory _category;
+        private PlaygroundZone _horizontalNeighbour;
+        private PlaygroundZone _verticalNeighbour;
 
         public PlaygroundZone()
         {
@@ -92,6 +97,42 @@ namespace GalaxyFootball.Core.Concrete
             set
             {
                 _id = value;
+            }
+        }
+
+        public PlaygroundZoneCategory Category
+        {
+            get
+            {
+                return _category;
+            }
+            set
+            {
+                _category = value;
+            }
+        }
+
+        public PlaygroundZone HorizontalNeighbour
+        {
+            get
+            {
+                return _horizontalNeighbour;
+            }
+            set
+            {
+                _horizontalNeighbour = value;
+            }
+        }
+
+        public PlaygroundZone VerticalNeighbour
+        {
+            get
+            {
+                return _verticalNeighbour;
+            }
+            set
+            {
+                _verticalNeighbour = value;
             }
         }
 

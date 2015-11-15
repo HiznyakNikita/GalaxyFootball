@@ -1,0 +1,5 @@
+D:\C#\GalaxyFootball\GalaxyFootball.Core\bin\Debug\GalaxyFootball.Core.dll
+D:\C#\GalaxyFootball\GalaxyFootball.Core\bin\Debug\GalaxyFootball.Core.pdb
+D:\C#\GalaxyFootball\GalaxyFootball.Core\obj\Debug\GalaxyFootball.Core.dll
+D:\C#\GalaxyFootball\GalaxyFootball.Core\obj\Debug\GalaxyFootball.Core.pdb
+D:\C#\GalaxyFootball\GalaxyFootball.Core\obj\Debug\GalaxyFootball.Core.csprojResolveAssemblyReference.cache

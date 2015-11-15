@@ -11,6 +11,6 @@ namespace GalaxyFootball.Core.Abstract
 {
     public interface ITeamStrategy
     {
-        Point ChangePlayerPosition(PlayerType playerType, Point previousPosition, PlaygroundZone zone, Ball ball);
+        Point ChangePlayerPosition(Player player);
     }
 }

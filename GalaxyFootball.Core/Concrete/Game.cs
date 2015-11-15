@@ -1,6 +1,10 @@
-﻿using System;
+﻿using GalaxyFootball.Core.Concrete.Helper;
+using GalaxyFootball.Core.Concrete.Helper.Enums;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,9 +12,14 @@ namespace GalaxyFootball.Core.Concrete
 {
     public class Game
     {
-        public Game()
+        public Game(Team teamHome, Team teamAway, Ball ball, Playground playground)
         {
-
+            TeamHome = teamHome;
+            TeamAway = teamAway;
+            Ball = ball;
+            Playground = playground;
+            FindPlayersDefaultZone();
+            GameEngine.CurrentGame = this;
         }
 
         #region Properties
@@ -52,5 +61,31 @@ namespace GalaxyFootball.Core.Concrete
         }
 
         #endregion
+
+        //Refactor to resolve dependency betweenplayer and game 
+        //Find way to put this into team class
+        public void FindPlayersDefaultZone()
+        {
+            foreach (var p in TeamHome.Players)
+            {
+                FindZoneForPlayer(p);
+            }
+
+            foreach (var p in TeamAway.Players)
+            {
+                FindZoneForPlayer(p);
+            }
+        }
+
+        private void FindZoneForPlayer(Player p)
+        {
+            foreach (var z in Playground.Zones)
+            {
+                if (z.CheckForZoneIntersection(p.StartPosition))
+                {
+                    p.DefaultZone = z;
+                }
+            }
+        }
     }
 }

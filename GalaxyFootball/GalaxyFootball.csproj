@@ -96,6 +96,15 @@
   <ItemGroup>
     <Resource Include="Resources\image\grass.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GalaxyFootball.Core\GalaxyFootball.Core.csproj">
+      <Project>{8b25fab6-19cb-4c90-b6a1-2d22355f4a80}</Project>
+      <Name>GalaxyFootball.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControls\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

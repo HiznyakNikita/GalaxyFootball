@@ -14,15 +14,40 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
     /// </summary>
     public class BalancedStrategy : ITeamStrategy
     {
-        public Point ChangePlayerPositon(PlayerType playerType, Point previousPosition, PlaygroundZone zone, Ball ball)
+        public Point ChangePlayerPosition(Player player)
         {
-            Point newPosition = new Point();
+            PlaygroundZone currentPlayerZone = GameEngine.CurrentGame.Playground.Zones.Where(z => z.CheckForZoneIntersection(player.Position)).FirstOrDefault();
+            Point newPosition = player.Position;
 
-            if(zone.CheckForZoneIntersection(ball.Position))
+            //if ball in current player zone => go to ball
+            if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
             {
-                newPosition.X = previousPosition.X < ball.Position.X ? previousPosition.X++ : previousPosition.X--;
-                newPosition.Y = previousPosition.Y < ball.Position.Y ? previousPosition.Y++ : previousPosition.Y--;
+                newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? ++newPosition.X : --newPosition.X;
+                newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? ++newPosition.Y : --newPosition.Y;
             }
+            else
+            {
+                foreach (var z in GameEngine.CurrentGame.Playground.Zones)
+                {
+                    if (z.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                    {
+                        //if ball in horizontal parallel zone => go to neighbour horizontal zone center
+                        if(z.Category == currentPlayerZone.HorizontalNeighbour.Category)
+                        {
+                            newPosition.X = player.Position.X < currentPlayerZone.HorizontalNeighbour.Center.X ? ++newPosition.X : --newPosition.X;
+                            newPosition.Y = player.Position.Y < currentPlayerZone.HorizontalNeighbour.Center.Y ? ++newPosition.Y : --newPosition.Y;
+                        }
+                        //if ball in vertical parallel zone => go to neighbour vertical zone center
+                        else if (z.Category == currentPlayerZone.VerticalNeighbour.Category)
+                        {
+                            newPosition.X = player.Position.X < currentPlayerZone.VerticalNeighbour.Center.X ? ++newPosition.X : --newPosition.X;
+                            newPosition.Y = player.Position.Y < currentPlayerZone.VerticalNeighbour.Center.Y ? ++newPosition.Y : --newPosition.Y;
+                        }
+                    }
+                }
+            }
+
+            return newPosition;
             
         }
     }

@@ -51,7 +51,19 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BallTest.cs" />
+    <Compile Include="InitHelper.cs" />
+    <Compile Include="PlaygroundZoneTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GalaxyFootball.Core\GalaxyFootball.Core.csproj">
+      <Project>{8b25fab6-19cb-4c90-b6a1-2d22355f4a80}</Project>
+      <Name>GalaxyFootball.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GalaxyFootball.csproj">
+      <Project>{30c7c3af-6b23-48eb-bd6f-230b96a21b95}</Project>
+      <Name>GalaxyFootball</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
