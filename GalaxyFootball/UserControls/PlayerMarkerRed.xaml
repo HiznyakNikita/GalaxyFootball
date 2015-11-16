@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="25" d:DesignWidth="25">
     <Grid>
-        <Image HorizontalAlignment="Left" Height="25" Opacity="30" VerticalAlignment="Top" Width="25" Source="/Resources/image/circle_red_30_30.png"/>
+        <Ellipse Height="25" Width="25" Fill="Red" Stroke="Red" Opacity="0.6"/>
         <Label x:Name="lblNumber" Content="{Binding Number}" Foreground="White"  FontSize="5" VerticalAlignment="Top" Height="17" Margin="6,4,3,0"/>
     </Grid>
 </UserControl>

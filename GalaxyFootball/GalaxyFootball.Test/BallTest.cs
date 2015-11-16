@@ -47,7 +47,15 @@ namespace GalaxyFootball.Test
                     Assert.AreEqual(p.Position.Y, 115);
                 }
             }
+        }
 
+        [TestMethod]
+        public void IsCanPickTest()
+        {
+            Ball ball = new Ball();
+            ball.Position = new Point(100, 100);
+            Assert.AreEqual(true, ball.IsCanPick(new Point(99,99)));
+            Assert.AreEqual(false, ball.IsCanPick(new Point(106, 99)));
         }
     }
 }

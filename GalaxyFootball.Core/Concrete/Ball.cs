@@ -1,4 +1,5 @@
 ﻿using GalaxyFootball.Core.Abstract;
+using GalaxyFootball.Core.Concrete;
 using GalaxyFootball.Core.Concrete.Helper;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,15 @@ namespace GalaxyFootball.Core
             _position = new Point(525, 349);
         }
 
+        public event EventHandler PositionChanged;
+
         #region Properties
+
+        public Player Owner 
+        { 
+            get; 
+            set; 
+        }
 
         public Point Position 
         { 
@@ -60,6 +69,13 @@ namespace GalaxyFootball.Core
 
         #endregion
 
+        protected virtual void OnPositionChanged()
+        {
+            if (PositionChanged != null)
+            {
+                PositionChanged(this, EventArgs.Empty);
+            }
+        }
 
         public void AttachObserver(IObserver observer)
         {
@@ -85,14 +101,12 @@ namespace GalaxyFootball.Core
             }
         }
 
-        public event EventHandler PositionChanged;
-
-        protected virtual void OnPositionChanged()
+        public bool IsCanPick(Point position)
         {
-            if (PositionChanged != null)
-            {
-                PositionChanged(this, EventArgs.Empty);
-            }
+            if ((Math.Abs(position.X - _position.X) < 3) && (Math.Abs(position.Y - _position.Y) < 3))
+                return true;
+            else
+                return false;
         }
 
         #region INotifyPropertyChanged

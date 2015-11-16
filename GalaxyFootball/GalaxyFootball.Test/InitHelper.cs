@@ -34,39 +34,36 @@ namespace GalaxyFootball.Test
 
         private static void InitPlayers()
         {
-            Player test1H = new Player("test1H", PlayerType.GoalkeeperHome, TestPlayground);
-            Player test7H = new Player("test7H", PlayerType.CentralMidfielderHome, TestPlayground);
-            Player test2H = new Player("test2H", PlayerType.LeftDefenderHome, TestPlayground);
-            Player test8H = new Player("test8H", PlayerType.LeftMidfielderHome, TestPlayground);
-            Player test3H = new Player("test3H", PlayerType.RightDefenderHome, TestPlayground);
-            Player test9H = new Player("test9H", PlayerType.RightMidfielderHome, TestPlayground);
-            Player test4H = new Player("test4H", PlayerType.CentralDefenderHomeLeft, TestPlayground);
-            Player test10H = new Player("test10H", PlayerType.AttackMidfielderHome, TestPlayground);
-            Player test5H = new Player("test5H", PlayerType.CentralDefenderHomeRight, TestPlayground);
-            Player test11H = new Player("test11H", PlayerType.CentralForwardHome, TestPlayground);
-            Player test6H = new Player("test6H", PlayerType.DefensiveMidfielderHome, TestPlayground);
-
-            playersHome.Add(test1H); playersHome.Add(test2H); playersHome.Add(test3H); playersHome.Add(test4H); playersHome.Add(test5H); playersHome.Add(test6H);
-            playersHome.Add(test7H); playersHome.Add(test8H); playersHome.Add(test9H); playersHome.Add(test10H); playersHome.Add(test11H);
-
-            Player test1A = new Player("test1A", PlayerType.GoalkeeperAway, TestPlayground);
-            Player test7A = new Player("test7A", PlayerType.CentralMidfielderAway, TestPlayground);
-            Player test2A = new Player("test2A", PlayerType.LeftDefenderAway, TestPlayground);
-            Player test8A = new Player("test8A", PlayerType.LeftMidfielderAway, TestPlayground);
-            Player test3A = new Player("test3A", PlayerType.RightDefenderAway, TestPlayground);
-            Player test9A = new Player("test9A", PlayerType.RightMidfielderAway, TestPlayground);
-            Player test4A = new Player("test4A", PlayerType.CentralDefenderAwayLeft, TestPlayground);
-            Player test10A = new Player("test10A", PlayerType.AttackMidfielderAway, TestPlayground);
-            Player test5A = new Player("test5A", PlayerType.CentralDefenderAwayRight, TestPlayground);
-            Player test11A = new Player("test11A", PlayerType.CentralForwardAway, TestPlayground);
-            Player test6A = new Player("test6A", PlayerType.DefensiveMidfielderAway, TestPlayground);
-
-            playersAway.Add(test1A); playersAway.Add(test2A); playersAway.Add(test3A); playersAway.Add(test4A); playersAway.Add(test5A); playersAway.Add(test6A);
-            playersAway.Add(test7A); playersAway.Add(test8A); playersAway.Add(test9A); playersAway.Add(test10A); playersAway.Add(test11A); 
-
-
-
-
+            Player playerHome1 = new Player("Mignolet", PlayerType.GoalkeeperHome, TestPlayground, 1, 70, 90, 50, 85, 80);
+            Player playerHome2 = new Player("Moreno", PlayerType.LeftDefenderHome, TestPlayground, 18, 90, 80, 70, 75, 75);
+            Player playerHome3 = new Player("Clyne", PlayerType.RightDefenderHome, TestPlayground, 5, 90, 85, 65, 80, 75);
+            Player playerHome4 = new Player("Skrtel", PlayerType.CentralDefenderHomeRight, TestPlayground, 4, 75, 90, 50, 85, 70);
+            Player playerHome5 = new Player("Sakho", PlayerType.CentralDefenderHomeLeft, TestPlayground, 3, 80, 90, 50, 85, 75);
+            Player playerHome6 = new Player("Can", PlayerType.DefensiveMidfielderHome, TestPlayground, 23, 75, 85, 70, 85, 80);
+            Player playerHome7 = new Player("Henderson", PlayerType.CentralMidfielderHome, TestPlayground, 14, 80, 80, 80, 85, 80);
+            Player playerHome8 = new Player("Milner", PlayerType.RightMidfielderHome, TestPlayground, 7, 70, 80, 75, 85, 80);
+            Player playerHome9 = new Player("Coutinho", PlayerType.LeftMidfielderHome, TestPlayground, 10, 85, 70, 90, 85, 85);
+            Player playerHome10 = new Player("Lallana", PlayerType.AttackMidfielderHome, TestPlayground, 20, 88, 65, 90, 82, 85);
+            Player playerHome11 = new Player("Benteke", PlayerType.CentralForwardHome, TestPlayground, 9, 70, 80, 65, 85, 85);
+            List<Player> playersHome = new List<Player>();
+            playersHome.Add(playerHome1); playersHome.Add(playerHome2); playersHome.Add(playerHome3); playersHome.Add(playerHome4);
+            playersHome.Add(playerHome5); playersHome.Add(playerHome6); playersHome.Add(playerHome7); playersHome.Add(playerHome8);
+            playersHome.Add(playerHome9); playersHome.Add(playerHome10); playersHome.Add(playerHome11);
+            Player playerAway1 = new Player("De Gea", PlayerType.GoalkeeperAway, TestPlayground, 1, 70, 90, 50, 85, 80);
+            Player playerAway2 = new Player("Blind", PlayerType.LeftDefenderAway, TestPlayground, 2, 70, 80, 70, 85, 80);
+            Player playerAway3 = new Player("Darmian", PlayerType.RightDefenderAway, TestPlayground, 3, 70, 85, 80, 85, 80);
+            Player playerAway4 = new Player("Rojo", PlayerType.CentralDefenderAwayLeft, TestPlayground, 4, 70, 90, 50, 85, 80);
+            Player playerAway5 = new Player("Smalling", PlayerType.CentralDefenderAwayRight, TestPlayground, 5, 72, 90, 50, 85, 80);
+            Player playerAway6 = new Player("Carrick", PlayerType.DefensiveMidfielderAway, TestPlayground, 6, 73, 90, 50, 85, 80);
+            Player playerAway7 = new Player("Herrera", PlayerType.CentralMidfielderAway, TestPlayground, 7, 77, 90, 50, 85, 80);
+            Player playerAway8 = new Player("Depay", PlayerType.LeftMidfielderAway, TestPlayground, 8, 70, 90, 50, 85, 80);
+            Player playerAway9 = new Player("Valencia", PlayerType.RightMidfielderAway, TestPlayground, 9, 76, 90, 50, 85, 80);
+            Player playerAway10 = new Player("Mata", PlayerType.AttackMidfielderAway, TestPlayground, 10, 74, 80, 70, 85, 80);
+            Player playerAway11 = new Player("Rooney", PlayerType.CentralForwardAway, TestPlayground, 11, 72, 85, 60, 85, 80);
+            List<Player> playersAway = new List<Player>();
+            playersAway.Add(playerAway1); playersAway.Add(playerAway2); playersAway.Add(playerAway3); playersAway.Add(playerAway4);
+            playersAway.Add(playerAway5); playersAway.Add(playerAway6); playersAway.Add(playerAway7); playersAway.Add(playerAway8);
+            playersAway.Add(playerAway9); playersAway.Add(playerAway10); playersAway.Add(playerAway11);
         }
     }
 }

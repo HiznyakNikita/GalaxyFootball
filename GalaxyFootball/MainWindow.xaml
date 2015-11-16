@@ -12,27 +12,27 @@
         <c:BallMarker Panel.ZIndex="3"  x:Name="ballMarker" Height="25" Width="25"
                       Canvas.Top="{Binding ElementName = this, Path=Game.Ball.Position.Y, UpdateSourceTrigger=PropertyChanged}"
                       Canvas.Left="{Binding ElementName = this, Path = Game.Ball.Position.X, UpdateSourceTrigger=PropertyChanged}"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker1" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker2" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker3" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker4" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker5" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker6" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker7" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker8" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker9" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker10" Height="25" Width="25"/>
-        <c:PlayerMarkerBlack Panel.ZIndex="2" x:Name="playerAwayMarker11" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker1" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker2" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker3" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker4" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker5" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker6" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker7" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker8" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker9" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker10" Height="25" Width="25"/>
-        <c:PlayerMarkerRed Panel.ZIndex="2" x:Name="playerHomeMarker11" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack x:Name="playerAwayMarker1" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack x:Name="playerAwayMarker2" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker3" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker4" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker5" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker6" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker7" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker8" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker9" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker10" Height="25" Width="25"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker11" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker1" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker2" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker3" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker4" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker5" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker6" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker7" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker8" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker9" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker10" Height="25" Width="25"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker11" Height="25" Width="25"/>
     </Canvas>
 </Window>
