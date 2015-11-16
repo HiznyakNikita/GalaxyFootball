@@ -48,6 +48,12 @@ namespace GalaxyFootball.Core.Concrete
             private set;
         }
 
+        public bool IsSelected 
+        { 
+            get; 
+            set; 
+        }
+
         public int Number
         {
             get;
@@ -234,16 +240,69 @@ namespace GalaxyFootball.Core.Concrete
             }
         }
 
-        public void Control(Ball ball)
+        public void Control(
+            Ball ball, 
+            bool isVerticalUp = false, 
+            bool isVerticalDown = false, 
+            bool isHorizontalAttack = false, 
+            bool isHorizontalDefend = false)
         {
             if (ball.Owner != null && ball.Owner.Equals(this))
             {
                 //control the ball while somebody doesn't picked it 
                 while (ball.Owner.Equals(this))
-                    ball.Position = new Point(Position.X + 2, Position.Y + 2);
+                {
+                    if (isHorizontalAttack)
+                        ball.Position = Type.ToString().Contains("Home") ? new Point(Position.X + SpeedPoints / 10, Position.Y) 
+                            : new Point(Position.X - SpeedPoints / 10, Position.Y);
+                    if (isHorizontalDefend)
+                        ball.Position = Type.ToString().Contains("Home") ? new Point(Position.X - SpeedPoints / 10, Position.Y) 
+                            : new Point(Position.X + SpeedPoints / 10, Position.Y);
+                    if (isVerticalDown)
+                        ball.Position = new Point(Position.X, Position.Y - SpeedPoints / 10);
+                    if (isVerticalUp)
+                        ball.Position = new Point(Position.X, Position.Y + SpeedPoints / 10);
+                }
             }
         }
 
+        #endregion
+
+        #region Collision methods
+
+        public bool CollisionWithPlayer(Player player)
+        {
+            if (Math.Abs(Position.X - player.Position.X) < 15 && Math.Abs(Position.Y - player.Position.Y) < 15)
+                return true;
+            else
+                return false;
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        public Player FindPartnerForPass()
+        {
+            if(Type.ToString().Contains("Home"))
+            {
+                foreach(var p in GameEngine.CurrentGame.TeamHome.Players)
+                {
+                    if (p.Position.X > Position.X)
+                        return p;
+                }
+                return GameEngine.CurrentGame.TeamHome.Players.FirstOrDefault();
+            }
+            else
+            {
+                foreach (var p in GameEngine.CurrentGame.TeamAway.Players)
+                {
+                    if (p.Position.X < Position.X)
+                        return p;
+                }
+                return GameEngine.CurrentGame.TeamAway.Players.FirstOrDefault();
+            }
+        }
         #endregion
     }
 }

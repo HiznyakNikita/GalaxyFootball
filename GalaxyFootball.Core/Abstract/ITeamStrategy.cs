@@ -11,6 +11,11 @@ namespace GalaxyFootball.Core.Abstract
 {
     public interface ITeamStrategy
     {
-        Point ChangePlayerPosition(Player player);
+        Point ChangePlayerPosition(
+            Player player, 
+            bool isVerticalUp = false,
+            bool isVerticalDown = false,
+            bool isHorizontalRight = false,
+            bool isHorizontalLeft = false);
     }
 }
