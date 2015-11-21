@@ -12,11 +12,13 @@ namespace GalaxyFootball.Core.Concrete
 {
     public class Game
     {
+        private Ball _ball;
+        private object _lock = new Object();
         public Game(Team teamHome, Team teamAway, Ball ball, Playground playground)
         {
             TeamHome = teamHome;
             TeamAway = teamAway;
-            Ball = ball;
+            _ball = ball;
             Playground = playground;
             FindPlayersDefaultZone();
             GameEngine.CurrentGame = this;
@@ -38,8 +40,21 @@ namespace GalaxyFootball.Core.Concrete
 
         public Ball Ball
         {
-            get;
-            private set;
+            get
+            {
+                lock(_lock)
+                {
+                    return _ball;
+                }
+            }
+            set
+            {
+                lock(_lock)
+                {
+                    if(value != null)
+                        _ball = value;
+                }
+            }
         }
 
         public int GoalsHome

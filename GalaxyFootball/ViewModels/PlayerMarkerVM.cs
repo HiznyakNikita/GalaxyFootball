@@ -1,4 +1,5 @@
 ﻿using GalaxyFootball.Core.Concrete;
+using GalaxyFootball.Helpers.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GalaxyFootball.ViewModels
 {
-    public class PlayerMarkerVM
+    public class PlayerMarkerVM :  IModel
     {
         public PlayerMarkerVM(int number, Player player)
         {

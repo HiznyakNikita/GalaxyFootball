@@ -7,10 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="25" d:DesignWidth="25">
     <UserControl.Resources>
-        <l:IsSelectedToStrokeColorConverter x:Key="IsSelectedToStrokeColorConverter" />
+        <l:IsSelectedToStrokeAwayColorConverter x:Key="IsSelectedToStrokeAwayColorConverter" />
     </UserControl.Resources>
     <Grid>
-        <Ellipse Height="25" Width="25" Fill="Black" Opacity="0.6" Stroke="{Binding Player.IsSelected, Converter={StaticResource IsSelectedToStrokeColorConverter}}"/>
+        <Ellipse Height="25" Width="25" 
+                 Fill="{Binding Player.IsSelected, Converter={StaticResource IsSelectedToStrokeAwayColorConverter}, UpdateSourceTrigger=PropertyChanged}" Opacity="0.6" />
         <Label x:Name="lblNumber" Content="" Foreground="White"  FontSize="5" VerticalAlignment="Top" Height="17" Margin="6,4,3,0"/>
     </Grid>
 </UserControl>

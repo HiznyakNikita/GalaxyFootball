@@ -56,6 +56,7 @@
     <Compile Include="Helpers\Abstract\IControl.cs" />
     <Compile Include="Helpers\Abstract\IModel.cs" />
     <Compile Include="Helpers\Abstract\IControlCreator.cs" />
+    <Compile Include="Helpers\Command.cs" />
     <Compile Include="Helpers\ControlCreator.cs" />
     <Compile Include="UserControls\BallMarker.xaml.cs">
       <DependentUpon>BallMarker.xaml</DependentUpon>

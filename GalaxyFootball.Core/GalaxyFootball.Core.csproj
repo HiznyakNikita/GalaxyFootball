@@ -45,6 +45,7 @@
     <Compile Include="Concrete\Ball.cs" />
     <Compile Include="Concrete\Game.cs" />
     <Compile Include="Concrete\GameEngine.cs" />
+    <Compile Include="Concrete\Helper\Enums\BallState.cs" />
     <Compile Include="Concrete\Helper\Enums\PlayerType.cs" />
     <Compile Include="Concrete\Helper\Enums\PlaygroundZoneCategory.cs" />
     <Compile Include="Concrete\Helper\Enums\TeamScheme.cs" />

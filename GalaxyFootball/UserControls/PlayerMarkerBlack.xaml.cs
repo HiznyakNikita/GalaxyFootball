@@ -19,15 +19,15 @@ using System.Windows.Shapes;
 
 namespace GalaxyFootball.UserControls
 {
-    public class IsSelectedToStrokeColorConverter : IValueConverter
+    public class IsSelectedToStrokeAwayColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
-            if ((value as Player).IsSelected)
-                return Color.FromArgb(100, 255, 255, 255);
+            if ((bool)value)
+                return new System.Windows.Media.SolidColorBrush(Colors.Yellow);
             else
-                return Color.FromArgb(0, 0, 0, 0);
+                return new System.Windows.Media.SolidColorBrush(Colors.Black);
         }
 
         public object ConvertBack(object value, Type targetType,
