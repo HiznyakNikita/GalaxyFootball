@@ -47,10 +47,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                         //if ball in current player zone => go to ball
                         if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
                         {
-                            newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / 10 + newPosition.X
-                                : newPosition.X - player.SpeedPoints / 10;
-                            newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / 10 + newPosition.Y
-                                : newPosition.Y - player.SpeedPoints / 10;
+                            newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                                : newPosition.X - player.SpeedPoints / (Double)200;
+                            newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                                : newPosition.Y - player.SpeedPoints / (Double)200;
                         }
                         else if (player.Type != PlayerType.GoalkeeperAway && player.Type != PlayerType.GoalkeeperHome)
                         {
@@ -61,10 +61,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                                     //if ball in horizontal parallel zone => go to neighbour horizontal zone center
                                     if (z.Category == currentPlayerZone.HorizontalNeighbour.Category)
                                     {
-                                        newPosition.X = player.Position.X < currentPlayerZone.HorizontalNeighbour.Center.X ? player.SpeedPoints / 10 + newPosition.X
-                                            : newPosition.X - player.SpeedPoints / 10;
-                                        newPosition.Y = player.Position.Y < currentPlayerZone.HorizontalNeighbour.Center.Y ? player.SpeedPoints / 10 + newPosition.Y
-                                            : newPosition.Y - player.SpeedPoints / 10;
+                                        newPosition.X = player.Position.X < currentPlayerZone.HorizontalNeighbour.Center.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                                            : newPosition.X - player.SpeedPoints / (Double)200;
+                                        newPosition.Y = player.Position.Y < currentPlayerZone.HorizontalNeighbour.Center.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                                            : newPosition.Y - player.SpeedPoints / (Double)200;
                                     }
                                     //if ball in vertical parallel zone => go to neighbour vertical zone center. DELETED BECAUSE UNREAL SITUATIONS
                                     //else if (z.Category == currentPlayerZone.VerticalNeighbour.Category)
@@ -74,10 +74,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                                     //}
                                     else
                                     {
-                                        newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / 10 + newPosition.X
-                                            : newPosition.X - player.SpeedPoints / 10;
-                                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / 10 + newPosition.Y
-                                            : newPosition.Y - player.SpeedPoints / 10;
+                                        newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                                            : newPosition.X - player.SpeedPoints / (Double)200;
+                                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                                            : newPosition.Y - player.SpeedPoints / (Double)200;
                                     }
                                 }
                             }
@@ -167,10 +167,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                         //if ball in current player zone => go to ball
                         if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
                         {
-                            newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / 10 + newPosition.X
-                                : newPosition.X - player.SpeedPoints / 10;
-                            newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / 10 + newPosition.Y
-                                : newPosition.Y - player.SpeedPoints / 10;
+                            newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                                : newPosition.X - player.SpeedPoints / (Double)200;
+                            newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                                : newPosition.Y - player.SpeedPoints / (Double)200;
                         }
                         else if (player.Type != PlayerType.GoalkeeperAway && player.Type != PlayerType.GoalkeeperHome)
                         {
@@ -181,10 +181,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                                     //if ball in horizontal parallel zone => go to neighbour horizontal zone center
                                     if (z.Category == currentPlayerZone.HorizontalNeighbour.Category)
                                     {
-                                        newPosition.X = player.Position.X < currentPlayerZone.HorizontalNeighbour.Center.X ? player.SpeedPoints / 10 + newPosition.X
-                                            : newPosition.X - player.SpeedPoints / 10;
-                                        newPosition.Y = player.Position.Y < currentPlayerZone.HorizontalNeighbour.Center.Y ? player.SpeedPoints / 10 + newPosition.Y
-                                            : newPosition.Y - player.SpeedPoints / 10;
+                                        newPosition.X = player.Position.X < currentPlayerZone.HorizontalNeighbour.Center.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                                            : newPosition.X - player.SpeedPoints / (Double)200;
+                                        newPosition.Y = player.Position.Y < currentPlayerZone.HorizontalNeighbour.Center.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                                            : newPosition.Y - player.SpeedPoints / (Double)200;
                                     }
                                     //if ball in vertical parallel zone => go to neighbour vertical zone center. DELETED BECAUSE UNREAL SITUATIONS
                                     //else if (z.Category == currentPlayerZone.VerticalNeighbour.Category)
@@ -194,10 +194,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                                     //}
                                     else
                                     {
-                                        newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / 10 + newPosition.X
-                                            : newPosition.X - player.SpeedPoints / 10;
-                                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / 10 + newPosition.Y
-                                            : newPosition.Y - player.SpeedPoints / 10;
+                                        newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                                            : newPosition.X - player.SpeedPoints / (Double)200;
+                                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                                            : newPosition.Y - player.SpeedPoints / (Double)200;
                                     }
                                 }
                             }
@@ -212,26 +212,26 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 if (isHorizontalLeft)
                 {
                     if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / 10 + player.Position.X, player.Position.Y);
-                    return new Point(- player.SpeedPoints / 10 + player.Position.X, player.Position.Y);
+                        GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
+                    return new Point(- player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
                 }
                 if (isHorizontalRight)
                 {
                     if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X + player.SpeedPoints / 10, player.Position.Y);
-                    return new Point(player.Position.X + player.SpeedPoints / 10, player.Position.Y);
+                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
+                    return new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
                 }
                 if (isVerticalDown)
                 {
                     if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, player.Position.Y + player.SpeedPoints / 10);
-                    return new Point(player.Position.X, player.Position.Y + player.SpeedPoints / 10);
+                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, player.Position.Y + player.SpeedPoints / (Double)200);
+                    return new Point(player.Position.X, player.Position.Y + player.SpeedPoints / (Double)200);
                 }
                 if (isVerticalUp)
                 {
                     if(GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / 10 + player.Position.Y);
-                    return new Point(player.Position.X, - player.SpeedPoints / 10 + player.Position.Y);
+                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                    return new Point(player.Position.X, - player.SpeedPoints / (Double)200 + player.Position.Y);
                 }
                 else
                 {
