@@ -194,6 +194,11 @@ namespace GalaxyFootball.Core
             _thread.Abort();
         }
 
+        public void Pick()
+        {
+            _position = new Point(Owner.Position.X, Owner.Position.Y);
+        }
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

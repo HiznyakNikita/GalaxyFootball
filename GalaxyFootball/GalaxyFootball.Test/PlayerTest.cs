@@ -38,7 +38,7 @@ namespace GalaxyFootball.Test
             _testBall.Owner = _testPlayer1;
             _testPlayer2.SetStartPosition(new Core.Concrete.Helper.Point(918, 242));
             _testPlayer2.Pick(_testBall);
-            Thread.Sleep(5000);
+            Thread.Sleep(6000);
             Assert.AreEqual(_testPlayer2, _testBall.Owner);
         }
 

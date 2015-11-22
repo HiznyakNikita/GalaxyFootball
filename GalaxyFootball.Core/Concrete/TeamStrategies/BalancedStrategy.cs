@@ -213,66 +213,108 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
 
         private static Point ForwardAttack(Player player, PlaygroundZone currentPlayerZone, ref Point newPosition)
         {
+            bool isHomeTeam = player.Type.ToString().Contains("Home");
             bool isIntersectWithPartnerInZone = player.Type.ToString().Contains("Home")
                 ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0
                 : GameEngine.CurrentGame.TeamAway.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0;
             if (!isIntersectWithPartnerInZone)
             {
-                if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                if (isHomeTeam)
                 {
-                    newPosition = BallInPlayerZone(player, currentPlayerZone);
-                    return newPosition;
+                    if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                    {
+                        newPosition = BallInPlayerZone(player, currentPlayerZone);
+                        return newPosition;
+                    }
+                    if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.RightBottom.X)
+                    {
+                        newPosition.X = player.SpeedPoints / (Double)200 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                            : -player.SpeedPoints / (Double)200 + newPosition.Y;
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X && player.Position.X > player.DefaultZone.LeftBottom.X)
+                    {
+                        newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    }
                 }
-                if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.RightBottom.X)
+                else
                 {
-                    newPosition.X = player.Type.ToString().Contains("Home") ? player.SpeedPoints / (Double)200 + newPosition.X
-                        : -player.SpeedPoints / (Double)200 + newPosition.X;
-                    newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
-                        : -player.SpeedPoints / (Double)200 + newPosition.Y;
-                }
-                else if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X && player.Position.X > player.DefaultZone.LeftBottom.X)
-                {
-                    newPosition.X = player.Type.ToString().Contains("Home") ? -player.SpeedPoints / (Double)400 + newPosition.X
-                        : +player.SpeedPoints / (Double)400 + newPosition.X;
-                    newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
-                        : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                    {
+                        newPosition = BallInPlayerZone(player, currentPlayerZone);
+                        return newPosition;
+                    }
+                    if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X && player.Position.X > player.DefaultZone.LeftBottom.X)
+                    {
+                        newPosition.X = -player.SpeedPoints / (Double)200 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                            : -player.SpeedPoints / (Double)200 + newPosition.Y;
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.RightBottom.X)
+                    {
+                        newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    }
                 }
             }
             else
             {
-                newPosition.X = player.Type.ToString().Contains("Home") ? 1 / (Double)200 + newPosition.X
-                        : 1 / (Double)200 + newPosition.X;
-                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 1 / (Double)200 + newPosition.Y
-                    : 1 / (Double)200 + newPosition.Y;
+                newPosition.X = 1 / (Double)200 + newPosition.X;
+                newPosition.Y = 1 / (Double)200 + newPosition.Y;
             }
             return newPosition;
         }
 
         private static Point MidfielderAttack(Player player, PlaygroundZone currentPlayerZone, ref Point newPosition)
         {
+            bool isHomeTeam = player.Type.ToString().Contains("Home");
             bool isIntersectWithPartnerInZone = player.Type.ToString().Contains("Home")
                 ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0
                 : GameEngine.CurrentGame.TeamAway.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0;
             if (!isIntersectWithPartnerInZone)
             {
-                if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                if (isHomeTeam)
                 {
-                    newPosition = BallInPlayerZone(player, currentPlayerZone);
-                    return newPosition;
+                    if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                    {
+                        newPosition = BallInPlayerZone(player, currentPlayerZone);
+                        return newPosition;
+                    }
+                    if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.HorizontalNeighbour.Center.X)
+                    {
+                        newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X && player.Position.X > player.DefaultZone.LeftBottom.X)
+                    {
+                        newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    }
                 }
-                if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.HorizontalNeighbour.Center.X)
+                else
                 {
-                    newPosition.X = player.Type.ToString().Contains("Home") ? player.SpeedPoints / (Double)400 + newPosition.X
-                        : -player.SpeedPoints / (Double)400 + newPosition.X;
-                    newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
-                        : -player.SpeedPoints / (Double)400 + newPosition.Y;
-                }
-                else if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X && player.Position.X > player.DefaultZone.LeftBottom.X)
-                {
-                    newPosition.X = player.Type.ToString().Contains("Home") ? -player.SpeedPoints / (Double)400 + newPosition.X
-                        : +player.SpeedPoints / (Double)400 + newPosition.X;
-                    newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
-                        : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                    {
+                        newPosition = BallInPlayerZone(player, currentPlayerZone);
+                        return newPosition;
+                    }
+                    if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X && player.Position.X > player.DefaultZone.LeftBottom.X)
+                    {
+                        newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.RightBottom.X)
+                    {
+                        newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
+                    }
                 }
             }
             else
@@ -282,48 +324,96 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 1 / (Double)200 + newPosition.Y
                     : -1 / (Double)200 + newPosition.Y;
             }
+
             return newPosition;
         }
 
         private static Point DefenderAttack(Player player, PlaygroundZone currentPlayerZone, ref Point newPosition)
         {
+            bool isHomeTeam = player.Type.ToString().Contains("Home");
             bool isIntersectWithPartnerInZone = player.Type.ToString().Contains("Home")
                ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0
                : GameEngine.CurrentGame.TeamAway.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0;
             if (!isIntersectWithPartnerInZone)
             {
-                if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                if (isHomeTeam)
                 {
-                    newPosition = BallInPlayerZone(player, currentPlayerZone);
-                    return newPosition;
-                }
+                    if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                    {
+                        newPosition = BallInPlayerZone(player, currentPlayerZone);
+                        return newPosition;
+                    }
 
-                //if this is flang defender
-                if (!player.Type.ToString().Contains("Central"))
-                {
-                    if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X
-                        && player.Position.X < player.DefaultZone.HorizontalNeighbour.HorizontalNeighbour.Center.X)
+                    //if this is flang defender
+                    if (!player.Type.ToString().Contains("Central"))
                     {
-                        newPosition.X = player.Type.ToString().Contains("Home") ? player.SpeedPoints / (Double)400 + newPosition.X
-                            : -player.SpeedPoints / (Double)400 + newPosition.X;
+                        if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X
+                            && player.Position.X < player.DefaultZone.HorizontalNeighbour.HorizontalNeighbour.Center.X)
+                        {
+                            newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        }
+                    }
+                    else if (player.Type.ToString().Contains("Central"))
+                    {
+                        if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.HorizontalNeighbour.Center.X)
+                        {
+                            newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        }
+                    }
+                    if (GameEngine.CurrentGame.Playground.Zones.Where(z => z.RightBottom.X == currentPlayerZone.RightBottom.X && !z.Equals(currentPlayerZone)
+                        && z.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position)).Count() > 0
+                        && GameEngine.CurrentGame.Ball.Position.X <= player.Position.X)
+                    {
+                        if (player.Position.X > currentPlayerZone.LeftBottom.X)
+                        {
+                            newPosition.X = -player.SpeedPoints / (Double)200 + newPosition.X;
+                        }
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X)
+                    {
+                        newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
                     }
                 }
-                else if (player.Type.ToString().Contains("Central"))
+                else
                 {
-                    if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X && player.Position.X < player.DefaultZone.HorizontalNeighbour.Center.X)
+                    if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
                     {
-                        newPosition.X = player.Type.ToString().Contains("Home") ? player.SpeedPoints / (Double)400 + newPosition.X
-                            : -player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition = BallInPlayerZone(player, currentPlayerZone);
+                        return newPosition;
                     }
-                }
-                if (GameEngine.CurrentGame.Playground.Zones.Where(z => z.RightBottom.X == currentPlayerZone.RightBottom.X && !z.Equals(currentPlayerZone)
-                    && z.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position)).Count() > 0
-                    && GameEngine.CurrentGame.Ball.Position.X <= player.Position.X)
-                {
-                    if (player.Position.X > currentPlayerZone.LeftBottom.X)
+
+                    //if this is flang defender
+                    if (!player.Type.ToString().Contains("Central"))
                     {
-                        newPosition.X = player.Type.ToString().Contains("Home") ? - player.SpeedPoints / (Double)200 + newPosition.X
-                        : player.SpeedPoints / (Double)200 + newPosition.X;
+                        if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X
+                            && player.Position.X > player.DefaultZone.HorizontalNeighbour.HorizontalNeighbour.Center.X)
+                        {
+                            newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
+                        }
+                    }
+                    else if (player.Type.ToString().Contains("Central"))
+                    {
+                        if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X && player.Position.X > player.DefaultZone.HorizontalNeighbour.Center.X)
+                        {
+                            newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
+                        }
+                    }
+                    if (GameEngine.CurrentGame.Playground.Zones.Where(z => z.RightBottom.X == currentPlayerZone.RightBottom.X && !z.Equals(currentPlayerZone)
+                        && z.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position)).Count() > 0
+                        && GameEngine.CurrentGame.Ball.Position.X >= player.Position.X)
+                    {
+                        if (player.Position.X < currentPlayerZone.RightBottom.X)
+                        {
+                            newPosition.X = player.SpeedPoints / (Double)200 + newPosition.X;
+                        }
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X)
+                    {
+                        newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
+                            : -player.SpeedPoints / (Double)400 + newPosition.Y;
                     }
                 }
             }
@@ -358,49 +448,94 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
 
             if (GameEngine.CurrentGame.Ball.IsCanPick(player.Position))
                 player.Pick(GameEngine.CurrentGame.Ball);
-            else
-            {
 
-                //if ball in current player zone => go to ball
-                if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
-                {
-                    newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
-                        : newPosition.X - player.SpeedPoints / (Double)200;
-                    newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
-                        : newPosition.Y - player.SpeedPoints / (Double)200;
-                }
-                else if (player.Type != PlayerType.GoalkeeperAway && player.Type != PlayerType.GoalkeeperHome)
-                {
-                    foreach (var z in GameEngine.CurrentGame.Playground.Zones)
-                    {
-                        if (z.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
-                        {
-                            //if ball in horizontal parallel zone => go to neighbour horizontal zone center
-                            if (z.Category == currentPlayerZone.HorizontalNeighbour.Category)
-                            {
-                                newPosition.X = player.Position.X < currentPlayerZone.HorizontalNeighbour.Center.X ? player.SpeedPoints / (Double)200 + newPosition.X
-                                    : newPosition.X - player.SpeedPoints / (Double)200;
-                                newPosition.Y = player.Position.Y < currentPlayerZone.HorizontalNeighbour.Center.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
-                                    : newPosition.Y - player.SpeedPoints / (Double)200;
-                            }
-                            //if ball in vertical parallel zone => go to neighbour vertical zone center. DELETED BECAUSE UNREAL SITUATIONS
-                            //else if (z.Category == currentPlayerZone.VerticalNeighbour.Category)
-                            //{
-                            //    newPosition.X = player.Position.X < currentPlayerZone.VerticalNeighbour.Center.X ? ++newPosition.X : --newPosition.X;
-                            //    newPosition.Y = player.Position.Y < currentPlayerZone.VerticalNeighbour.Center.Y ? ++newPosition.Y : --newPosition.Y;
-                            //}
-                            else
-                            {
-                                newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
-                                    : newPosition.X - player.SpeedPoints / (Double)200;
-                                newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
-                                    : newPosition.Y - player.SpeedPoints / (Double)200;
-                            }
-                        }
-                    }
-                }
+            if (player.Type.ToString().Contains("Goalkeeper"))
+            {
+                newPosition = BallInPlayerZone(player, currentPlayerZone);
+                return newPosition;
+            }
+            if (player.Type.ToString().Contains("Defender"))
+            {
+                return DefenderDefensive(player, currentPlayerZone, ref newPosition);
+            }
+            if (player.Type.ToString().Contains("Midfielder"))
+            {
+                return MidfielderDefensive(player, currentPlayerZone, ref newPosition);
+            }
+            if (player.Type.ToString().Contains("Forward"))
+            {
+                return ForwardDefensive(player, currentPlayerZone, ref newPosition);
             }
             return newPosition;
         }
+
+        private static Point ForwardDefensive(Player player, PlaygroundZone currentPlayerZone, ref Point newPosition)
+        {
+            bool isHomeTeam = player.Type.ToString().Contains("Home");
+            bool isIntersectWithPartnerInZone = player.Type.ToString().Contains("Home")
+               ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0
+               : GameEngine.CurrentGame.TeamAway.Players.Where(p => p.CheckForIntersectionInZone(player) && !p.Equals(player)).Count() > 0;
+            if (!isIntersectWithPartnerInZone)
+            {
+                if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
+                {
+                    newPosition = BallInPlayerZone(player, currentPlayerZone);
+                    return newPosition;
+                }
+                if(isHomeTeam)
+                {
+                    if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X)
+                    {
+                        newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                        : -player.SpeedPoints / (Double)200 + newPosition.X;
+                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                            : -player.SpeedPoints / (Double)200 + newPosition.Y;
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X 
+                        && player.Position.X > GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 5).FirstOrDefault().Center.X)
+                    {
+                        newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
+                    }
+                    return newPosition;
+                }
+                else
+                {
+                    if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X)
+                    {
+                        newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
+                        : -player.SpeedPoints / (Double)200 + newPosition.X;
+                        newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
+                            : -player.SpeedPoints / (Double)200 + newPosition.Y;
+                    }
+                    else if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X
+                        && player.Position.X < GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 5).FirstOrDefault().Center.X)
+                    {
+                        newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                    }
+                    return newPosition;
+                }
+            }
+            else
+            {
+                newPosition.X = player.Type.ToString().Contains("Home") ? 4 / (Double)200 + newPosition.X
+                       : 4 / (Double)200 + newPosition.X;
+                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 4 / (Double)200 + newPosition.Y
+                    : -4 / (Double)200 + newPosition.Y;
+            }
+            return newPosition;
+        }
+
+        private static Point MidfielderDefensive(Player player, PlaygroundZone currentPlayerZone, ref Point newPosition)
+        {
+            return newPosition;
+        }
+
+        private static Point DefenderDefensive(Player player, PlaygroundZone currentPlayerZone, ref Point newPosition)
+        {
+            return newPosition;
+        }
+
+
+
     }
 }

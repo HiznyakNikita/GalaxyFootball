@@ -262,6 +262,7 @@ namespace GalaxyFootball.Core.Concrete
         public void Pick(Ball ball)
         {
             ball.State = BallState.Controlled;
+            ball.Pick();
             if (ball.Owner != null && !ball.Owner.Equals(this) && ball.IsCanPick(Position))
             {
                 if (DefensePoints * r.NextDouble() > ball.Owner.DribblePoints * r.NextDouble())
@@ -292,6 +293,7 @@ namespace GalaxyFootball.Core.Concrete
             //double xIncrementer = proportion > 1 ? 5*proportion : 5;
             //double yIncrementer = proportion > 1 ? 5 : 5 * proportion;
             tuple.Item1.State = BallState.Passed;
+            
             double xPos = 0;
             double yPos = 0;
             if (tuple.Item1.Owner != null && tuple.Item1.Owner.Equals(this))
@@ -299,7 +301,8 @@ namespace GalaxyFootball.Core.Concrete
                 while (!tuple.Item1.IsCanPick(tuple.Item2.Position))
                 {
                     if (Math.Abs(tuple.Item2.Position.X - xPos) >= 3)
-                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 5 + tuple.Item1.Position.X: -5 + tuple.Item1.Position.X;
+                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 5 + tuple.Item1.Position.X 
+                            : -5 + tuple.Item1.Position.X;
                     if (Math.Abs(tuple.Item2.Position.Y - yPos) >= 3)
                         yPos = tuple.Item2.Position.Y > tuple.Item1.Position.Y ? 5 + tuple.Item1.Position.Y : -5 + tuple.Item1.Position.Y;
                     tuple.Item1.Position = new Point(xPos, yPos);
