@@ -103,9 +103,12 @@ namespace GalaxyFootball.ViewModels
         public void ChangePlayer(object param)
         {
             _currentSelectedPlayer = GameEngine.CurrentGame.TeamHome.Players.Where(p => p.IsSelected).FirstOrDefault();
-            Player nearestPlayer = _currentSelectedPlayer.FindNearestPlayer();
-            _currentSelectedPlayer.IsSelected = false;
-            nearestPlayer.IsSelected = true;
+            if (!GameEngine.CurrentGame.Ball.Owner.Equals(_currentSelectedPlayer))
+            {
+                Player nearestPlayer = _currentSelectedPlayer.FindNearestPlayer();
+                _currentSelectedPlayer.IsSelected = false;
+                nearestPlayer.IsSelected = true;
+            }
         }
 
         public void MoveSelectedPlayer(bool isUp = false, bool isDown = false, bool isRight = false, bool isLeft = false)

@@ -279,9 +279,9 @@ namespace GalaxyFootball.Core.Concrete
                 while (!tuple.Item1.IsCanPick(tuple.Item2.Position))
                 {
                     if (Math.Abs(tuple.Item2.Position.X - xPos) >= 3)
-                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 10 + tuple.Item1.Position.X: -10 + tuple.Item1.Position.X;
+                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 5 + tuple.Item1.Position.X: -5 + tuple.Item1.Position.X;
                     if (Math.Abs(tuple.Item2.Position.Y - yPos) >= 3)
-                        yPos = tuple.Item2.Position.Y > tuple.Item1.Position.Y ? 10 + tuple.Item1.Position.Y : -10 + tuple.Item1.Position.Y;
+                        yPos = tuple.Item2.Position.Y > tuple.Item1.Position.Y ? 5 + tuple.Item1.Position.Y : -5 + tuple.Item1.Position.Y;
                     tuple.Item1.Position = new Point(xPos, yPos);
                 }
                 tuple.Item1.Owner = tuple.Item2;
@@ -361,14 +361,22 @@ namespace GalaxyFootball.Core.Concrete
         public Player FindNearestPlayer()
         {
             Player res = this;
-            double xDif = Position.X+100;
-            double yDif = Position.Y+100;
+            double xDif = 200;
+            double yDif = 200;
             foreach(var p in GameEngine.CurrentGame.TeamHome.Players)
             {
                 if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
                     res = p;
             }
             return res;
+        }
+
+        public bool CheckForIntersectionInZone(Player player)
+        {
+            if (Math.Abs(Position.X - player.Position.X) < 5 && Math.Abs(Position.Y - player.Position.Y) < 5)
+                return true;
+            else
+                return false;
         }
 
         #endregion
