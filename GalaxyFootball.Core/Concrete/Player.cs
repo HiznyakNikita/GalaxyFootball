@@ -397,8 +397,10 @@ namespace GalaxyFootball.Core.Concrete
                 }
                 //Select player with minium x and y 
                 Player resPlayer = results.Count > 0 ? results.Aggregate((curMin, x)
-                    => (curMin == null || (Math.Abs(x.Position.X - Position.X) < Math.Abs(curMin.Position.X - Position.X)
-                    && Math.Abs(x.Position.Y - Position.Y) < Math.Abs(curMin.Position.Y - Position.Y)) ? x : curMin))
+                    => (curMin == null || Math.Sqrt(Math.Abs(x.Position.X - Position.X) * Math.Abs(x.Position.X - Position.X)
+                    + Math.Abs(x.Position.Y - Position.Y) * Math.Abs(x.Position.Y - Position.Y))
+                    < Math.Sqrt(Math.Abs(curMin.Position.X - Position.X) * Math.Abs(curMin.Position.X - Position.X)
+                    + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y)) ? x : curMin))
                     : GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault() != null 
                     ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault()
                     : FindNearestPlayer();
