@@ -267,6 +267,10 @@ namespace GalaxyFootball.Core.Concrete
         private void PassThreadMethod(object param)
         {
             Tuple<Ball,Player> tuple = param as Tuple<Ball,Player>;
+            //double proportion = ((Double)Math.Abs(GameEngine.CurrentGame.Ball.Position.X - tuple.Item2.Position.X) == 0 ? 1 : (Double)Math.Abs(GameEngine.CurrentGame.Ball.Position.X - tuple.Item2.Position.X))
+            //    / ((Double)Math.Abs(GameEngine.CurrentGame.Ball.Position.Y - tuple.Item2.Position.Y) == 0 ? 1 : (Double)Math.Abs(GameEngine.CurrentGame.Ball.Position.Y - tuple.Item2.Position.Y));
+            //double xIncrementer = proportion > 1 ? 5*proportion : 5;
+            //double yIncrementer = proportion > 1 ? 5 : 5 * proportion;
             tuple.Item1.State = BallState.Passed;
             double xPos = 0;
             double yPos = 0;
@@ -275,9 +279,9 @@ namespace GalaxyFootball.Core.Concrete
                 while (!tuple.Item1.IsCanPick(tuple.Item2.Position))
                 {
                     if (Math.Abs(tuple.Item2.Position.X - xPos) >= 3)
-                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 10 + tuple.Item1.Position.X: -5 + tuple.Item1.Position.X;
+                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 10 + tuple.Item1.Position.X: -10 + tuple.Item1.Position.X;
                     if (Math.Abs(tuple.Item2.Position.Y - yPos) >= 3)
-                        yPos = tuple.Item2.Position.Y > tuple.Item1.Position.Y ? 10 + tuple.Item1.Position.Y : -5 + tuple.Item1.Position.Y;
+                        yPos = tuple.Item2.Position.Y > tuple.Item1.Position.Y ? 10 + tuple.Item1.Position.Y : -10 + tuple.Item1.Position.Y;
                     tuple.Item1.Position = new Point(xPos, yPos);
                 }
                 tuple.Item1.Owner = tuple.Item2;

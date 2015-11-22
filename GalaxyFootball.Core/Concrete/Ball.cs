@@ -73,7 +73,15 @@ namespace GalaxyFootball.Core
                             _position.X = value.X;
                     }
                     _thread = new Thread(new ThreadStart(Notify));
-                    _thread.Start();
+                    try
+                    {
+                        if (_thread.ThreadState == ThreadState.Aborted || _thread.ThreadState == ThreadState.Unstarted)
+                            _thread.Start();
+                    }
+                catch(ThreadStateException)
+                    { }
+                catch(ThreadStartException)
+                    { }
                     OnPositionChanged();
                     NotifyPropertyChanged("Position");
                 }
@@ -111,11 +119,12 @@ namespace GalaxyFootball.Core
             {
                 o.Update();
             }
+            _thread.Abort();
         }
 
         public bool IsCanPick(Point position)
         {
-            if ((Math.Abs(position.X - _position.X) < 3) && (Math.Abs(position.Y - _position.Y) < 3))
+            if ((Math.Abs(position.X - _position.X) < 5) && (Math.Abs(position.Y - _position.Y) < 5))
                 return true;
             else
                 return false;
