@@ -193,25 +193,37 @@ namespace GalaxyFootball
             {
                 _model.ChangePlayer(null);
             }
-            if(e.Key == Key.Up)
+            if (e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right)
             {
-                _model.MoveSelectedPlayer(true, false, false, false);
-            }
-            if(e.Key == Key.Right)
-            {
-                _model.MoveSelectedPlayer(false, false, true, false);
-            }
-            if(e.Key == Key.Left)
-            {
-                _model.MoveSelectedPlayer(false, false, false, true);
-            }
-            if(e.Key == Key.Down)
-            {
-                _model.MoveSelectedPlayer(false, true, false, false);
+                bool isUp = false;
+                bool isDown = false;
+                bool isRight = false;
+                bool isLeft = false;
+                if (Keyboard.IsKeyDown(Key.Up))
+                    isUp = true;
+                if (Keyboard.IsKeyDown(Key.Down))
+                    isDown = true;
+                if (Keyboard.IsKeyDown(Key.Left))
+                    isLeft = true;
+                if (Keyboard.IsKeyDown(Key.Right))
+                    isRight = true;
+                _model.MoveSelectedPlayer(isUp,isDown,isRight,isLeft);
             }
             if(e.Key == Key.X)
             {
-                _model.ActionSelectedPlayer(false, true);
+                bool isUp = false; 
+                bool isDown = false; 
+                bool isRight = false; 
+                bool isLeft = false;
+                if (Keyboard.IsKeyDown(Key.Up))
+                    isUp = true;
+                if (Keyboard.IsKeyDown(Key.Down))
+                    isDown = true;
+                if (Keyboard.IsKeyDown(Key.Left))
+                    isLeft = true;
+                if (Keyboard.IsKeyDown(Key.Right))
+                    isRight = true;
+                _model.ActionSelectedPlayer(false, true, isUp, isDown, isRight, isLeft);
             }
             if(e.Key == Key.D)
             {

@@ -117,11 +117,17 @@ namespace GalaxyFootball.ViewModels
             _currentSelectedPlayer.SetMoveDirection(isUp, isDown, isRight, isLeft);
         }
 
-        public void ActionSelectedPlayer(bool isShoot, bool isPass)
+        public void ActionSelectedPlayer(
+            bool isShoot, 
+            bool isPass,
+            bool isUp = false, 
+            bool isDown = false, 
+            bool isRight = false, 
+            bool isLeft = false)
         {
             _currentSelectedPlayer = GameEngine.CurrentGame.TeamHome.Players.Where(p => p.IsSelected).FirstOrDefault();
             if (isPass)
-                _currentSelectedPlayer.Pass(GameEngine.CurrentGame.Ball, _currentSelectedPlayer.FindPartnerForPass());
+                _currentSelectedPlayer.Pass(GameEngine.CurrentGame.Ball, _currentSelectedPlayer.FindPartnerForPass(isUp,isDown,isRight,isLeft));
             if (isShoot)
                 _currentSelectedPlayer.Shoot(GameEngine.CurrentGame.Ball);
         }

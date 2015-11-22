@@ -258,10 +258,17 @@ namespace GalaxyFootball.Core.Concrete
                 ball.Owner = this;
         }
 
-        public void Pass(Ball ball, Player partner)
+        public void Pass(Ball ball, Player partner, bool isUp = false, bool isDown = false, bool isRight = false, bool isLeft = false)
         {
-            Thread thread = new Thread(new ParameterizedThreadStart(PassThreadMethod));
-            thread.Start(new Tuple<Ball, Player>(ball, partner));
+            _isUp = isUp;
+            _isDown = isDown;
+            _isRight = isRight;
+            _isLeft = isLeft;
+            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+            {
+                Thread thread = new Thread(new ParameterizedThreadStart(PassThreadMethod));
+                thread.Start(new Tuple<Ball, Player>(ball, partner));
+            }
         }
 
         private void PassThreadMethod(object param)
@@ -336,16 +343,66 @@ namespace GalaxyFootball.Core.Concrete
 
         #region Helper methods
 
-        public Player FindPartnerForPass()
+        public Player FindPartnerForPass(
+            bool isVerticalUp = false,
+            bool isVerticalDown = false,
+            bool isHorizontalRight = false,
+            bool isHorizontalLeft = false)
         {
             if(Type.ToString().Contains("Home"))
             {
+                List<Player> results = new List<Player>();
                 foreach(var p in GameEngine.CurrentGame.TeamHome.Players)
                 {
-                    if (p.Position.X > Position.X)
-                        return p;
+                    if(isVerticalUp)
+                    {
+                        if(isHorizontalRight)
+                        {
+                            if (p.Position.X > Position.X && p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
+                                results.Add(p);
+                        }
+                        else if(isHorizontalLeft)
+                        {
+                            if (p.Position.X < Position.X && p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
+                                results.Add(p);
+                        }
+                        else if (p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
+                            results.Add(p);
+                    }
+                    else if (isVerticalDown)
+                    {
+                        if (isHorizontalRight)
+                        {
+                            if (p.Position.X > Position.X && p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
+                                results.Add(p);
+                        }
+                        else if (isHorizontalLeft)
+                        {
+                            if (p.Position.X < Position.X && p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
+                                results.Add(p);
+                        }
+                        else if (p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
+                            results.Add(p);
+                    }
+                    else if (isHorizontalRight)
+                    {
+                        if (p.Position.X > Position.X && !CheckForIntersectionInZone(p))
+                            results.Add(p);
+                    }
+                    else if(isHorizontalLeft)
+                    {
+                        if (p.Position.X < Position.X && !CheckForIntersectionInZone(p))
+                            results.Add(p);
+                    }
                 }
-                return GameEngine.CurrentGame.TeamHome.Players.FirstOrDefault();
+                //Select player with minium x and y 
+                Player resPlayer = results.Count > 0 ? results.Aggregate((curMin, x)
+                    => (curMin == null || (Math.Abs(x.Position.X - Position.X) < Math.Abs(curMin.Position.X - Position.X)
+                    && Math.Abs(x.Position.Y - Position.Y) < Math.Abs(curMin.Position.Y - Position.Y)) ? x : curMin))
+                    : GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault() != null 
+                    ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault()
+                    : FindNearestPlayer();
+                return resPlayer;
             }
             else
             {
@@ -361,8 +418,8 @@ namespace GalaxyFootball.Core.Concrete
         public Player FindNearestPlayer()
         {
             Player res = this;
-            double xDif = 200;
-            double yDif = 200;
+            double xDif = 400;
+            double yDif = 400;
             foreach(var p in GameEngine.CurrentGame.TeamHome.Players)
             {
                 if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
@@ -373,7 +430,7 @@ namespace GalaxyFootball.Core.Concrete
 
         public bool CheckForIntersectionInZone(Player player)
         {
-            if (Math.Abs(Position.X - player.Position.X) < 5 && Math.Abs(Position.Y - player.Position.Y) < 5)
+            if (Math.Abs(Position.X - player.Position.X) < 5 && Math.Abs(Position.Y - player.Position.Y) < 5 && !player.Equals(this))
                 return true;
             else
                 return false;

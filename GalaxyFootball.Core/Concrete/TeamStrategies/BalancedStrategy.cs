@@ -42,29 +42,63 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             //if we ontrol player
             else
             {
-                if (isHorizontalLeft)
+                if(isVerticalDown)
+                {
+                    if(isHorizontalRight)
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(player.SpeedPoints / (Double)200 + player.Position.X,
+                                player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                    }
+                    else if (isHorizontalLeft)
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X,
+                                player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                    }
+                    else
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                    }
+                }
+                else if(isVerticalUp)
+                {
+                    if (isHorizontalRight)
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(player.SpeedPoints / (Double)200 + player.Position.X,
+                                -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                    }
+                    else if (isHorizontalLeft)
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X,
+                                -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                    }
+                    else
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                    }
+                }
+                else if (isHorizontalLeft)
                 {
                     if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
                         GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
                     return new Point(- player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
                 }
-                if (isHorizontalRight)
+                else if (isHorizontalRight)
                 {
                     if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
                         GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
                     return new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
-                }
-                if (isVerticalDown)
-                {
-                    if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, player.Position.Y + player.SpeedPoints / (Double)200);
-                    return new Point(player.Position.X, player.Position.Y + player.SpeedPoints / (Double)200);
-                }
-                if (isVerticalUp)
-                {
-                    if(GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
-                    return new Point(player.Position.X, - player.SpeedPoints / (Double)200 + player.Position.Y);
                 }
                 else
                 {
