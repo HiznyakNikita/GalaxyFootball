@@ -49,6 +49,8 @@
     <Compile Include="Concrete\Helper\Enums\PlayerType.cs" />
     <Compile Include="Concrete\Helper\Enums\PlaygroundZoneCategory.cs" />
     <Compile Include="Concrete\Helper\Enums\TeamScheme.cs" />
+    <Compile Include="Concrete\Helper\EventArgsHelpers\GoalScoredEventArgs.cs" />
+    <Compile Include="Concrete\Helper\EventArgsHelpers\OutOfPlaygroundEventArgs.cs" />
     <Compile Include="Concrete\Helper\Point.cs" />
     <Compile Include="Concrete\Player.cs" />
     <Compile Include="Concrete\Playground.cs" />

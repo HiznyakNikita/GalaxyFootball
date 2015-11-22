@@ -1,6 +1,7 @@
 ﻿using GalaxyFootball.Core;
 using GalaxyFootball.Core.Concrete;
 using GalaxyFootball.Core.Concrete.Helper.Enums;
+using GalaxyFootball.Core.Concrete.Helper.EventArgsHelpers;
 using GalaxyFootball.Core.Concrete.TeamStrategies;
 using GalaxyFootball.Helpers;
 using GalaxyFootball.Helpers.Abstract;
@@ -24,6 +25,8 @@ namespace GalaxyFootball.ViewModels
             _game.Ball.PositionChanged += Ball_PositionChanged;
             _currentSelectedPlayer = GameEngine.CurrentGame.TeamHome.Players[6];
             ChangePlayerCommand = new Command(ChangePlayer);
+            GameEngine.CurrentGame.Ball.GoalScored += Ball_GoalScored;
+            GameEngine.CurrentGame.Ball.OutOfPlayground += Ball_OutOfPlayground;
         }
 
         public event EventHandler PlayerPositionsChanged;
@@ -38,6 +41,15 @@ namespace GalaxyFootball.ViewModels
             {
                 _game = value;
             }
+        }
+
+        public Player WhoScored { get; set; }
+        public string Score 
+        { 
+            get
+            {
+                return Game.TeamHome.Name + " " + Game.GoalsHome + "-" + Game.GoalsAway + " " + Game.TeamAway.Name;
+            } 
         }
 
         private void Ball_PositionChanged(object sender, EventArgs e)
@@ -133,6 +145,26 @@ namespace GalaxyFootball.ViewModels
         }
 
         #endregion
+
+        void Ball_GoalScored(object sender, EventArgs e)
+        {
+            if ((e as GoalScoredEventArgs).IsHomeScored)
+                GameEngine.CurrentGame.GoalsHome++;
+            else
+                GameEngine.CurrentGame.GoalsAway++;
+            WhoScored = (e as GoalScoredEventArgs).WhoScored;
+            NotifyPropertyChanged("WhoScored");
+            NotifyPropertyChanged("Score");
+            _game.ResetPositionsAfterGoal();
+            OnPlayerPositionChanged();
+        }
+
+        void Ball_OutOfPlayground(object sender, EventArgs e)
+        {
+            _game.ResetPositionsAfterGoal();
+            OnPlayerPositionChanged();
+            //_game.ResetPositionsAfterOut((e as OutOfPlaygroundEventArgs).IsHomeSideOut);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

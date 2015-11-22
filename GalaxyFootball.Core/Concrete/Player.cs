@@ -14,8 +14,10 @@ namespace GalaxyFootball.Core.Concrete
     public class Player: INotifyPropertyChanged
     {
         private Playground _playground;
+        private Point _startPosition;
         private Point _position;
         private bool _isSelected;
+        private Thread _actionThread;
         private Random r = new Random();
         private bool _isUp = false;
         private bool _isDown = false;
@@ -143,8 +145,10 @@ namespace GalaxyFootball.Core.Concrete
 
         public Point StartPosition
         {
-            get;
-            private set;
+            get
+            {
+                return _startPosition;
+            }
         }
 
         public PlayerType Type
@@ -191,7 +195,9 @@ namespace GalaxyFootball.Core.Concrete
 
         public void SetStartPosition(Point position)
         {
-            _position = StartPosition = position;
+            _position = position;
+            // do this for independent startPoint and point values
+            _startPosition = new Point(position.X,position.Y);
         }
 
         #endregion
@@ -200,8 +206,11 @@ namespace GalaxyFootball.Core.Concrete
 
         public void Shoot(Ball ball)
         {
-            Thread thread = new Thread(new ParameterizedThreadStart(ShootThreadMethod));
-            thread.Start(ball);
+            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+            {
+                _actionThread = new Thread(new ParameterizedThreadStart(ShootThreadMethod));
+                _actionThread.Start(ball);
+            }
         }
 
         private void ShootThreadMethod(object param)
@@ -214,8 +223,9 @@ namespace GalaxyFootball.Core.Concrete
                 {
                     double yFinishPos = r.Next(300, 398);
                     while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
-                                            || (Type.ToString().Contains("Home") && ball.Position.X != 1030))
+                                            || (Type.ToString().Contains("Home") && ball.Position.X != 1030) && ball.State == BallState.Shootted)
                     {
+                        ball.State = BallState.Shootted;
                         double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 10 + ball.Position.Y : ShootPowerPoints / 10 + ball.Position.Y;
                         double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 10 + ball.Position.X : -ShootPowerPoints / 10 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
@@ -225,8 +235,9 @@ namespace GalaxyFootball.Core.Concrete
                 {
                     double yFinishPos = r.Next(260, 430);
                     while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
-                        || (Type.ToString().Contains("Home") && ball.Position.X != 1030))
+                        || (Type.ToString().Contains("Home") && ball.Position.X != 1030) && ball.State == BallState.Shootted)
                     {
+                        ball.State = BallState.Shootted;
                         double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 10 + ball.Position.Y : ShootPowerPoints / 10 + ball.Position.Y;
                         double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 10  + ball.Position.X: -ShootPowerPoints / 10 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
@@ -236,14 +247,16 @@ namespace GalaxyFootball.Core.Concrete
                 {
                     double yFinishPos = r.Next(233, 466);
                     while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
-                        || (Type.ToString().Contains("Home") && ball.Position.X != 1030))
+                        || (Type.ToString().Contains("Home") && ball.Position.X < 1015) && ball.State == BallState.Shootted)
                     {
+                        ball.State = BallState.Shootted;
                         double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 10 + ball.Position.Y: ShootPowerPoints / 10 + ball.Position.Y;
                         double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 10  + ball.Position.X: - ShootPowerPoints / 10 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
                     }
                 }
             }
+            _actionThread.Abort();
         }
 
         public void Pick(Ball ball)
@@ -266,8 +279,8 @@ namespace GalaxyFootball.Core.Concrete
             _isLeft = isLeft;
             if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
             {
-                Thread thread = new Thread(new ParameterizedThreadStart(PassThreadMethod));
-                thread.Start(new Tuple<Ball, Player>(ball, partner));
+                _actionThread  = new Thread(new ParameterizedThreadStart(PassThreadMethod));
+                _actionThread.Start(new Tuple<Ball, Player>(ball, partner));
             }
         }
 
@@ -296,6 +309,7 @@ namespace GalaxyFootball.Core.Concrete
                 this.IsSelected = false;
                 tuple.Item1.State = BallState.Controlled;
             }
+            _actionThread.Abort();
         }
 
         public void Control(
@@ -428,6 +442,13 @@ namespace GalaxyFootball.Core.Concrete
                     res = p;
             }
             return res;
+        }
+
+        public void Reset()
+        {
+            _position = new Point(_startPosition.X, _startPosition.Y);
+            _isSelected = false;
+            NotifyPropertyChanged("IsSelected");
         }
 
         public bool CheckForIntersectionInZone(Player player)

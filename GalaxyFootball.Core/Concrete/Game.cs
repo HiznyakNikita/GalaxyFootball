@@ -102,5 +102,48 @@ namespace GalaxyFootball.Core.Concrete
                 }
             }
         }
+
+        // reset players and ball position after scored goal
+        public void ResetPositionsAfterGoal()
+        {
+            _ball.Reset();
+            foreach (Player p in TeamHome.Players)
+            {
+                p.Reset();
+            }
+            foreach (Player p in TeamAway.Players)
+            {
+                p.Reset();
+            }
+            _ball.Owner = TeamHome.Players[6];
+            TeamHome.Players[6].IsSelected = true;
+            _ball.State = BallState.Controlled;
+        }
+
+        // reset players and ball position after out
+        public void ResetPositionsAfterOut(bool isHomeSideOut)
+        {
+            _ball.Reset();
+            foreach (Player p in TeamHome.Players)
+            {
+                p.Reset();
+            }
+            foreach (Player p in TeamAway.Players)
+            {
+                p.Reset();
+            }
+            if(isHomeSideOut)
+            {
+                _ball.Owner = TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperHome).FirstOrDefault();
+                _ball.State = BallState.Controlled;
+                _ball.Position = _ball.Owner.Position;
+            }
+            else
+            {
+                //_ball.Owner = TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperAway).FirstOrDefault();
+                //_ball.State = BallState.Controlled;
+                //_ball.Position = _ball.Owner.Position;
+            }
+        }
     }
 }

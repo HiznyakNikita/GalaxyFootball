@@ -10,6 +10,7 @@ namespace GalaxyFootball.Core.Concrete.Helper.Enums
     {
         Controlled,
         Passed,
-        Shootted
+        Shootted,
+        Outed
     }
 }

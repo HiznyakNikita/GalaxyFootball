@@ -8,13 +8,14 @@
     <Window.Background>
         <ImageBrush ImageSource="/Resources/image/grass.jpg"></ImageBrush>
     </Window.Background>
-   <!--<Window.InputBindings>
+    <!--<Window.InputBindings>
         <KeyBinding Command="{Binding ChangePlayerCommand}" Key="Q"></KeyBinding>
     </Window.InputBindings> -->
     <Canvas x:Name="PlaygroundCanvas">
         <c:BallMarker Panel.ZIndex="3"  x:Name="ballMarker" Height="25" Width="25"
                       Canvas.Top="{Binding ElementName = this, Path=Game.Ball.Position.Y, UpdateSourceTrigger=PropertyChanged}"
                       Canvas.Left="{Binding ElementName = this, Path = Game.Ball.Position.X, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Content="{Binding Score, UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="White" Canvas.Left="10" Canvas.Top="10" Width="250" Height="26"/>
         <!-- <c:PlayerMarkerBlack x:Name="playerAwayMarker1" Height="25" Width="25"/>
         <c:PlayerMarkerBlack x:Name="playerAwayMarker2" Height="25" Width="25"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker3" Height="25" Width="25"/>

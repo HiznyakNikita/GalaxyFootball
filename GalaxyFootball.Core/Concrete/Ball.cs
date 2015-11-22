@@ -2,6 +2,7 @@
 using GalaxyFootball.Core.Concrete;
 using GalaxyFootball.Core.Concrete.Helper;
 using GalaxyFootball.Core.Concrete.Helper.Enums;
+using GalaxyFootball.Core.Concrete.Helper.EventArgsHelpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +19,7 @@ namespace GalaxyFootball.Core
         private object _lock = new Object();
         private Thread _thread;
         private Point _position;
+        private bool _isOutOfPlayground = false;
 
         public Ball()
         {
@@ -27,6 +29,8 @@ namespace GalaxyFootball.Core
         }
 
         public event EventHandler PositionChanged;
+        public event EventHandler GoalScored;
+        public event EventHandler OutOfPlayground;
 
         #region Properties
 
@@ -50,12 +54,28 @@ namespace GalaxyFootball.Core
             }
             set
             {
-                if (value.X < 20 || value.Y < 20)
+                    if (value.X < 20 || value.Y < 20)
                     {
                         if (value.X < 20)
-                            _position.X = 20;
+                        {
+                            if (value.Y < 396 && value.Y > 304)
+                            {
+                                State = BallState.Outed;
+                                OnGoalScored();
+                                _isOutOfPlayground = true;
+                            }
+                            else
+                            {
+                                State = BallState.Outed;
+                                OnOutOfPlayground();
+                                _isOutOfPlayground = true;
+                            }
+                        }
                         else
+                        {
+                            _isOutOfPlayground = false;
                             _position.X = value.X;
+                        }
                         if (value.Y < 20)
                             _position.Y = 20;
                         else
@@ -67,23 +87,42 @@ namespace GalaxyFootball.Core
                             _position.Y = 680;
                         else
                             _position.Y = value.Y;
-                        if (value.X > 1030)
-                            _position.X = 1030;
+                        if (value.X > 1010)
+                        {
+                            if (value.Y < 396 && value.Y > 304)
+                            {
+                                State = BallState.Outed;
+                                OnGoalScored();
+                                _isOutOfPlayground = true;
+                            }
+                            else
+                            {
+                                State = BallState.Outed;
+                                OnOutOfPlayground();
+                                _isOutOfPlayground = true;
+                            }
+                        }
                         else
+                        {
+                            _isOutOfPlayground = false;
                             _position.X = value.X;
+                        }
                     }
-                    _thread = new Thread(new ThreadStart(Notify));
-                    try
+                    if (!_isOutOfPlayground)
                     {
-                        if (_thread.ThreadState == ThreadState.Aborted || _thread.ThreadState == ThreadState.Unstarted)
-                            _thread.Start();
+                        _thread = new Thread(new ThreadStart(Notify));
+                        try
+                        {
+                            if (_thread.ThreadState == ThreadState.Aborted || _thread.ThreadState == ThreadState.Unstarted)
+                                _thread.Start();
+                        }
+                        catch (ThreadStateException)
+                        { }
+                        catch (ThreadStartException)
+                        { }
+                        OnPositionChanged();
+                        NotifyPropertyChanged("Position");
                     }
-                catch(ThreadStateException)
-                    { }
-                catch(ThreadStartException)
-                    { }
-                    OnPositionChanged();
-                    NotifyPropertyChanged("Position");
                 }
         }
 
@@ -94,6 +133,24 @@ namespace GalaxyFootball.Core
             if (PositionChanged != null)
             {
                 PositionChanged(this, EventArgs.Empty);
+            }
+        }
+
+        protected virtual void OnGoalScored()
+        {
+            if (GoalScored != null)
+            {
+                bool isHomeScored = Owner.Type.ToString().Contains("Home");
+                GoalScored(this, new GoalScoredEventArgs(isHomeScored,Owner));
+            }
+        }
+
+        protected virtual void OnOutOfPlayground()
+        {
+            if (OutOfPlayground != null)
+            {
+                bool isHomeSideOut = !Owner.Type.ToString().Contains("Home");
+                OutOfPlayground(this, new OutOfPlaygroundEventArgs(isHomeSideOut));
             }
         }
 
@@ -128,6 +185,13 @@ namespace GalaxyFootball.Core
                 return true;
             else
                 return false;
+        }
+
+        public void Reset()
+        {
+            _position = new Point(510, 349);
+            Owner = null;
+            _thread.Abort();
         }
 
         #region INotifyPropertyChanged
