@@ -270,6 +270,8 @@ namespace GalaxyFootball.Core.Concrete
             }
             else if (ball.Owner == null && ball.IsCanPick(Position))
                 ball.Owner = this;
+            if (Type.ToString().Contains("Goalkeeper"))
+                _position = new Point(_startPosition.X, _startPosition.Y);
         }
 
         public void Pass(Ball ball, Player partner, bool isUp = false, bool isDown = false, bool isRight = false, bool isLeft = false)

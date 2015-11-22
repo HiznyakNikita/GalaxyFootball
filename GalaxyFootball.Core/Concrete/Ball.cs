@@ -181,7 +181,7 @@ namespace GalaxyFootball.Core
 
         public bool IsCanPick(Point position)
         {
-            if ((Math.Abs(position.X - _position.X) < 5) && (Math.Abs(position.Y - _position.Y) < 5))
+            if ((Math.Abs(position.X - _position.X) < 9) && (Math.Abs(position.Y - _position.Y) < 9))
                 return true;
             else
                 return false;

@@ -44,12 +44,12 @@ namespace GalaxyFootball
         PlayerMarkerRed playerHomeMarker10;
         PlayerMarkerRed playerHomeMarker11;
 
-        //PlayerMarkerBlack playerAwayMarker1;
-        //PlayerMarkerBlack playerAwayMarker2;
+        PlayerMarkerBlack playerAwayMarker1;
+        PlayerMarkerBlack playerAwayMarker2;
 
-        //PlayerMarkerBlack playerAwayMarker3;
-        //PlayerMarkerBlack playerAwayMarker4;
-        //PlayerMarkerBlack playerAwayMarker5;
+        PlayerMarkerBlack playerAwayMarker3;
+        PlayerMarkerBlack playerAwayMarker4;
+        PlayerMarkerBlack playerAwayMarker5;
         //PlayerMarkerBlack playerAwayMarker6;
         //PlayerMarkerBlack playerAwayMarker7;
         //PlayerMarkerBlack playerAwayMarker8;
@@ -78,11 +78,11 @@ namespace GalaxyFootball
             playerHomeMarker10 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[9]));
             playerHomeMarker11 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[10]));
 
-            //playerAwayMarker1 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[0]));
-            //playerAwayMarker2 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[1]));
-            //playerAwayMarker3 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[2]));
-            //playerAwayMarker4 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[3]));
-            //playerAwayMarker5 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[4]));
+            playerAwayMarker1 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[0]));
+            playerAwayMarker2 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[1]));
+            playerAwayMarker3 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[2]));
+            playerAwayMarker4 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[3]));
+            playerAwayMarker5 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[4]));
             //playerAwayMarker6 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[5]));
             //playerAwayMarker7 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[6]));
             //playerAwayMarker8 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[7]));
@@ -106,11 +106,11 @@ namespace GalaxyFootball
             PlaygroundCanvas.Children.Add(playerHomeMarker10);
             PlaygroundCanvas.Children.Add(playerHomeMarker11);
 
-            //PlaygroundCanvas.Children.Add(playerAwayMarker1);
-            //PlaygroundCanvas.Children.Add(playerAwayMarker2);
-            //PlaygroundCanvas.Children.Add(playerAwayMarker3);
-            //PlaygroundCanvas.Children.Add(playerAwayMarker4);
-            //PlaygroundCanvas.Children.Add(playerAwayMarker5);
+            PlaygroundCanvas.Children.Add(playerAwayMarker1);
+            PlaygroundCanvas.Children.Add(playerAwayMarker2);
+            PlaygroundCanvas.Children.Add(playerAwayMarker3);
+            PlaygroundCanvas.Children.Add(playerAwayMarker4);
+            PlaygroundCanvas.Children.Add(playerAwayMarker5);
             //PlaygroundCanvas.Children.Add(playerAwayMarker6);
             //PlaygroundCanvas.Children.Add(playerAwayMarker7);
             //PlaygroundCanvas.Children.Add(playerAwayMarker8);
@@ -153,16 +153,16 @@ namespace GalaxyFootball
                 Canvas.SetLeft(playerHomeMarker11, _model.Game.TeamHome.Players[10].Position.X);
                 Canvas.SetTop(playerHomeMarker11, _model.Game.TeamHome.Players[10].Position.Y);
 
-                //Canvas.SetLeft(playerAwayMarker1, _model.Game.TeamAway.Players[0].Position.X);
-                //Canvas.SetTop(playerAwayMarker1, _model.Game.TeamAway.Players[0].Position.Y);
-                //Canvas.SetLeft(playerAwayMarker2, _model.Game.TeamAway.Players[1].Position.X);
-                //Canvas.SetTop(playerAwayMarker2, _model.Game.TeamAway.Players[1].Position.Y);
-                //Canvas.SetLeft(playerAwayMarker3, _model.Game.TeamAway.Players[2].Position.X);
-                //Canvas.SetTop(playerAwayMarker3, _model.Game.TeamAway.Players[2].Position.Y);
-                //Canvas.SetLeft(playerAwayMarker4, _model.Game.TeamAway.Players[3].Position.X);
-                //Canvas.SetTop(playerAwayMarker4, _model.Game.TeamAway.Players[3].Position.Y);
-                //Canvas.SetLeft(playerAwayMarker5, _model.Game.TeamAway.Players[4].Position.X);
-                //Canvas.SetTop(playerAwayMarker5, _model.Game.TeamAway.Players[4].Position.Y);
+                Canvas.SetLeft(playerAwayMarker1, _model.Game.TeamAway.Players[0].Position.X);
+                Canvas.SetTop(playerAwayMarker1, _model.Game.TeamAway.Players[0].Position.Y);
+                Canvas.SetLeft(playerAwayMarker2, _model.Game.TeamAway.Players[1].Position.X);
+                Canvas.SetTop(playerAwayMarker2, _model.Game.TeamAway.Players[1].Position.Y);
+                Canvas.SetLeft(playerAwayMarker3, _model.Game.TeamAway.Players[2].Position.X);
+                Canvas.SetTop(playerAwayMarker3, _model.Game.TeamAway.Players[2].Position.Y);
+                Canvas.SetLeft(playerAwayMarker4, _model.Game.TeamAway.Players[3].Position.X);
+                Canvas.SetTop(playerAwayMarker4, _model.Game.TeamAway.Players[3].Position.Y);
+                Canvas.SetLeft(playerAwayMarker5, _model.Game.TeamAway.Players[4].Position.X);
+                Canvas.SetTop(playerAwayMarker5, _model.Game.TeamAway.Players[4].Position.Y);
                 //Canvas.SetLeft(playerAwayMarker6, _model.Game.TeamAway.Players[5].Position.X);
                 //Canvas.SetTop(playerAwayMarker6, _model.Game.TeamAway.Players[5].Position.Y);
                 //Canvas.SetLeft(playerAwayMarker7, _model.Game.TeamAway.Players[6].Position.X);
