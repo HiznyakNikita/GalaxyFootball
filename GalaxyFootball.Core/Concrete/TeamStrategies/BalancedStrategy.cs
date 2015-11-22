@@ -147,6 +147,8 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 ? GameEngine.CurrentGame.TeamAway.Players : GameEngine.CurrentGame.TeamHome.Players;
             List<Player> partnerPlayers = player.Type.ToString().Contains("Home")
                 ? GameEngine.CurrentGame.TeamHome.Players : GameEngine.CurrentGame.TeamAway.Players;
+            if(player.Type.ToString().Contains("Goalkeeper"))
+                player.Pass(GameEngine.CurrentGame.Ball, player.FindPartnerForPass());
             foreach (var p in opponentPlayers)
             {
                 //if opponent in 15px radius pass the ball to partner
@@ -446,10 +448,15 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             PlaygroundZone currentPlayerZone = GameEngine.CurrentGame.Playground.Zones.Where(z => z.CheckForZoneIntersection(player.Position)).FirstOrDefault();
             Point newPosition = player.Position;
 
-            if (GameEngine.CurrentGame.Ball.IsCanPick(player.Position))
+            if (((player.Type.ToString().Contains("Home") && player.IsSelected) || player.Type.ToString().Contains("Away")
+                || player.Type.ToString().Contains("Goalkeeper"))
+                && GameEngine.CurrentGame.Ball.IsCanPick(player.Position))
+            {
                 player.Pick(GameEngine.CurrentGame.Ball);
+                newPosition = player.Position;
+            }
 
-            if (player.Type.ToString().Contains("Goalkeeper"))
+            else if (player.Type.ToString().Contains("Goalkeeper"))
             {
                 //if ball in current player zone => go to ball
                 if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
@@ -461,15 +468,15 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 }
                 return newPosition;
             }
-            if (player.Type.ToString().Contains("Defender"))
+            else if (player.Type.ToString().Contains("Defender"))
             {
                 return DefenderDefensive(player, currentPlayerZone, ref newPosition);
             }
-            if (player.Type.ToString().Contains("Midfielder"))
+            else if (player.Type.ToString().Contains("Midfielder"))
             {
                 return MidfielderDefensive(player, currentPlayerZone, ref newPosition);
             }
-            if (player.Type.ToString().Contains("Forward"))
+            else if (player.Type.ToString().Contains("Forward"))
             {
                 return ForwardDefensive(player, currentPlayerZone, ref newPosition);
             }

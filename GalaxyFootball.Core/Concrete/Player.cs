@@ -14,6 +14,7 @@ namespace GalaxyFootball.Core.Concrete
     public class Player: INotifyPropertyChanged
     {
         private Playground _playground;
+        private object _lock;
         private Point _startPosition;
         private Point _position;
         private bool _isSelected;
@@ -114,31 +115,37 @@ namespace GalaxyFootball.Core.Concrete
         {
             get
             {
-                return _position;
+                lock (_lock)
+                {
+                    return _position;
+                }
             }
             set
             {
-                if (value.X < 20 || value.Y < 20)
+                lock (_lock)
                 {
-                    if (value.X < 20)
-                        _position.X = 20;
+                    if (value.X < 20 || value.Y < 20)
+                    {
+                        if (value.X < 20)
+                            _position.X = 20;
+                        else
+                            _position.X = value.X;
+                        if (value.Y < 20)
+                            _position.Y = 20;
+                        else
+                            _position.Y = value.Y;
+                    }
                     else
-                        _position.X = value.X;
-                    if (value.Y < 20)
-                        _position.Y = 20;
-                    else
-                        _position.Y = value.Y;
-                }
-                else
-                {
-                    if (value.Y > 680)
-                        _position.Y = 680;
-                    else
-                        _position.Y = value.Y;
-                    if (value.X > 1030)
-                        _position.X = 1030;
-                    else
-                        _position.X = value.X;
+                    {
+                        if (value.Y > 680)
+                            _position.Y = 680;
+                        else
+                            _position.Y = value.Y;
+                        if (value.X > 1030)
+                            _position.X = 1030;
+                        else
+                            _position.X = value.X;
+                    }
                 }
             }
         }
@@ -226,8 +233,8 @@ namespace GalaxyFootball.Core.Concrete
                                             || (Type.ToString().Contains("Home") && ball.Position.X != 1030) && ball.State == BallState.Shootted)
                     {
                         ball.State = BallState.Shootted;
-                        double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 10 + ball.Position.Y : ShootPowerPoints / 10 + ball.Position.Y;
-                        double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 10 + ball.Position.X : -ShootPowerPoints / 10 + ball.Position.X;
+                        double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 15 + ball.Position.Y : ShootPowerPoints / 15 + ball.Position.Y;
+                        double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 15 + ball.Position.X : -ShootPowerPoints / 15 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
                     }
                 }
@@ -238,8 +245,8 @@ namespace GalaxyFootball.Core.Concrete
                         || (Type.ToString().Contains("Home") && ball.Position.X != 1030) && ball.State == BallState.Shootted)
                     {
                         ball.State = BallState.Shootted;
-                        double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 10 + ball.Position.Y : ShootPowerPoints / 10 + ball.Position.Y;
-                        double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 10  + ball.Position.X: -ShootPowerPoints / 10 + ball.Position.X;
+                        double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 15 + ball.Position.Y : ShootPowerPoints / 15 + ball.Position.Y;
+                        double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 15  + ball.Position.X: -ShootPowerPoints / 15 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
                     }
                 }
@@ -250,8 +257,8 @@ namespace GalaxyFootball.Core.Concrete
                         || (Type.ToString().Contains("Home") && ball.Position.X < 1015) && ball.State == BallState.Shootted)
                     {
                         ball.State = BallState.Shootted;
-                        double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 10 + ball.Position.Y: ShootPowerPoints / 10 + ball.Position.Y;
-                        double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 10  + ball.Position.X: - ShootPowerPoints / 10 + ball.Position.X;
+                        double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 15 + ball.Position.Y: ShootPowerPoints / 15 + ball.Position.Y;
+                        double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 15  + ball.Position.X: - ShootPowerPoints / 15 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
                     }
                 }
@@ -262,16 +269,25 @@ namespace GalaxyFootball.Core.Concrete
         public void Pick(Ball ball)
         {
             ball.State = BallState.Controlled;
-            ball.Pick();
             if (ball.Owner != null && !ball.Owner.Equals(this) && ball.IsCanPick(Position))
             {
                 if (DefensePoints * r.NextDouble() > ball.Owner.DribblePoints * r.NextDouble())
+                {
+                    ball.Owner.LoseBall();
                     ball.Owner = this;
+                    ball.Pick();
+                }
             }
             else if (ball.Owner == null && ball.IsCanPick(Position))
+            {
+                ball.Owner.LoseBall();
                 ball.Owner = this;
+                ball.Pick();
+            }
             if (Type.ToString().Contains("Goalkeeper"))
+            {
                 _position = new Point(_startPosition.X, _startPosition.Y);
+            }
         }
 
         public void Pass(Ball ball, Player partner, bool isUp = false, bool isDown = false, bool isRight = false, bool isLeft = false)
@@ -361,6 +377,16 @@ namespace GalaxyFootball.Core.Concrete
         #endregion
 
         #region Helper methods
+
+        private void LoseBall()
+        {
+            if(GameEngine.CurrentGame.Ball.Owner != null && GameEngine.CurrentGame.Ball.Owner.Equals(this))
+            {
+                GameEngine.CurrentGame.Ball.Owner = null;
+                if(_actionThread != null)
+                    _actionThread.Abort();
+            }
+        }
 
         public Player FindPartnerForPass(
             bool isVerticalUp = false,
