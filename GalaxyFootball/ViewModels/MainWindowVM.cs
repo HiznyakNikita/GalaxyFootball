@@ -23,10 +23,11 @@ namespace GalaxyFootball.ViewModels
         {
             _game = InitGameStub();
             _game.Ball.PositionChanged += Ball_PositionChanged;
-            _currentSelectedPlayer = GameEngine.CurrentGame.TeamHome.Players[6];
+            _currentSelectedPlayer = GameEngine.CurrentGame.TeamHome.Players[6];//GameEngine.CurrentGame.TeamHome.Players[6];
             ChangePlayerCommand = new Command(ChangePlayer);
             GameEngine.CurrentGame.Ball.GoalScored += Ball_GoalScored;
             GameEngine.CurrentGame.Ball.OutOfPlayground += Ball_OutOfPlayground;
+            _game.Ball.Notify();
         }
 
         public event EventHandler PlayerPositionsChanged;
@@ -80,7 +81,7 @@ namespace GalaxyFootball.ViewModels
             Player playerHome11 = new Player("Benteke", PlayerType.CentralForwardHome, _playground, 9, 70, 80, 65, 85, 85);
             List<Player> homeTeamPlayers = new List<Player>();
             homeTeamPlayers.Add(playerHome1); homeTeamPlayers.Add(playerHome2); homeTeamPlayers.Add(playerHome3); homeTeamPlayers.Add(playerHome4);
-            homeTeamPlayers.Add(playerHome5);homeTeamPlayers.Add(playerHome6); 
+            homeTeamPlayers.Add(playerHome5); homeTeamPlayers.Add(playerHome6);
             homeTeamPlayers.Add(playerHome7); homeTeamPlayers.Add(playerHome8);
             homeTeamPlayers.Add(playerHome9); homeTeamPlayers.Add(playerHome10); homeTeamPlayers.Add(playerHome11);
             Player playerAway1 = new Player("De Gea", PlayerType.GoalkeeperAway, _playground, 1, 70, 90, 50, 85, 80);
@@ -88,21 +89,21 @@ namespace GalaxyFootball.ViewModels
             Player playerAway3 = new Player("Darmian", PlayerType.RightDefenderAway, _playground, 3, 70, 85, 80, 85, 80);
             Player playerAway4 = new Player("Rojo", PlayerType.CentralDefenderAwayLeft, _playground, 4, 70, 90, 50, 85, 80);
             Player playerAway5 = new Player("Smalling", PlayerType.CentralDefenderAwayRight, _playground, 5, 72, 90, 50, 85, 80);
-            //Player playerAway6 = new Player("Carrick", PlayerType.DefensiveMidfielderAway, _playground, 6, 73, 90, 50, 85, 80);
-            //Player playerAway7 = new Player("Herrera", PlayerType.CentralMidfielderAway, _playground, 7, 77, 90, 50, 85, 80);
-            //Player playerAway8 = new Player("Depay", PlayerType.LeftMidfielderAway, _playground, 8, 70, 90, 50, 85, 80);
-            //Player playerAway9 = new Player("Valencia", PlayerType.RightMidfielderAway, _playground, 9, 76, 90, 50, 85, 80);
-            //Player playerAway10 = new Player("Mata", PlayerType.AttackMidfielderAway, _playground, 10, 74, 80, 70, 85, 80);
-            //Player playerAway11 = new Player("Rooney", PlayerType.CentralForwardAway, _playground, 11, 72, 85, 60, 85, 80);
+            Player playerAway6 = new Player("Carrick", PlayerType.DefensiveMidfielderAway, _playground, 6, 73, 90, 50, 85, 80);
+            Player playerAway7 = new Player("Herrera", PlayerType.CentralMidfielderAway, _playground, 7, 77, 90, 50, 85, 80);
+            Player playerAway8 = new Player("Depay", PlayerType.LeftMidfielderAway, _playground, 8, 70, 90, 50, 85, 80);
+            Player playerAway9 = new Player("Valencia", PlayerType.RightMidfielderAway, _playground, 9, 76, 90, 50, 85, 80);
+            Player playerAway10 = new Player("Mata", PlayerType.AttackMidfielderAway, _playground, 10, 74, 80, 70, 85, 80);
+            Player playerAway11 = new Player("Rooney", PlayerType.CentralForwardAway, _playground, 11, 72, 85, 60, 85, 80);
             List<Player> awayTeamPlayers = new List<Player>();
             awayTeamPlayers.Add(playerAway1); awayTeamPlayers.Add(playerAway2); awayTeamPlayers.Add(playerAway3); awayTeamPlayers.Add(playerAway4);
-            awayTeamPlayers.Add(playerAway5); //awayTeamPlayers.Add(playerAway6); awayTeamPlayers.Add(playerAway7); awayTeamPlayers.Add(playerAway8);
-            //awayTeamPlayers.Add(playerAway9); awayTeamPlayers.Add(playerAway10); awayTeamPlayers.Add(playerAway11);
+            awayTeamPlayers.Add(playerAway5); awayTeamPlayers.Add(playerAway6); awayTeamPlayers.Add(playerAway7); awayTeamPlayers.Add(playerAway8);
+            awayTeamPlayers.Add(playerAway9); awayTeamPlayers.Add(playerAway10); awayTeamPlayers.Add(playerAway11);
 
             Team homeTeam = new Team(TeamScheme.Home451, new BalancedStrategy(), homeTeamPlayers);
             Team awayTeam = new Team(TeamScheme.Away451, new BalancedStrategy(), awayTeamPlayers);
             Ball ball = new Ball();
-            ball.Owner = playerHome7;
+            ball.Owner = playerHome7;//playerHome7;
             ball.AttachObserver(homeTeam);
             ball.AttachObserver(awayTeam);
             Game game = new Game(homeTeam, awayTeam, ball, _playground);
@@ -132,6 +133,7 @@ namespace GalaxyFootball.ViewModels
         public void ActionSelectedPlayer(
             bool isShoot, 
             bool isPass,
+            bool isPick,
             bool isUp = false, 
             bool isDown = false, 
             bool isRight = false, 
@@ -142,11 +144,13 @@ namespace GalaxyFootball.ViewModels
                 _currentSelectedPlayer.Pass(GameEngine.CurrentGame.Ball, _currentSelectedPlayer.FindPartnerForPass(isUp,isDown,isRight,isLeft));
             if (isShoot)
                 _currentSelectedPlayer.Shoot(GameEngine.CurrentGame.Ball);
+            if (isPick)
+                _currentSelectedPlayer.Pick(GameEngine.CurrentGame.Ball);
         }
 
         #endregion
 
-        void Ball_GoalScored(object sender, EventArgs e)
+       void Ball_GoalScored(object sender, EventArgs e)
         {
             if ((e as GoalScoredEventArgs).IsHomeScored)
                 GameEngine.CurrentGame.GoalsHome++;
@@ -155,7 +159,7 @@ namespace GalaxyFootball.ViewModels
             WhoScored = (e as GoalScoredEventArgs).WhoScored;
             NotifyPropertyChanged("WhoScored");
             NotifyPropertyChanged("Score");
-            _game.ResetPositionsAfterGoal();
+            _game.ResetPositionsAfterGoal((e as GoalScoredEventArgs).IsHomeScored);
             OnPlayerPositionChanged();
         }
 
@@ -163,7 +167,7 @@ namespace GalaxyFootball.ViewModels
         {
             _game.ResetPositionsAfterGoal();
             OnPlayerPositionChanged();
-            //_game.ResetPositionsAfterOut((e as OutOfPlaygroundEventArgs).IsHomeSideOut);
+            _game.ResetPositionsAfterOut((e as OutOfPlaygroundEventArgs).IsHomeSideOut);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

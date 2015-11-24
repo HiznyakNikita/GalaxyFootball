@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace GalaxyFootball.Core.Concrete.Helper.Enums
 {
-    public enum BallState
+    [Serializable]
+    public enum PlayerState
     {
-        Controlled,
-        Passed,
-        Shootted,
-        Outed,
-        Picked
+        InAction,
+        Free
     }
 }

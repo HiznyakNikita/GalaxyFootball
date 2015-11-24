@@ -12,7 +12,7 @@ namespace GalaxyFootball.Core.Concrete
 {
     public class Game
     {
-        private Ball _ball;
+        private volatile Ball _ball;
         private object _lock = new Object();
         public Game(Team teamHome, Team teamAway, Ball ball, Playground playground)
         {
@@ -104,7 +104,7 @@ namespace GalaxyFootball.Core.Concrete
         }
 
         // reset players and ball position after scored goal
-        public void ResetPositionsAfterGoal()
+        public void ResetPositionsAfterGoal(bool isHomeScored)
         {
             _ball.Reset();
             foreach (Player p in TeamHome.Players)
@@ -115,9 +115,18 @@ namespace GalaxyFootball.Core.Concrete
             {
                 p.Reset();
             }
-            _ball.Owner = TeamHome.Players[6];
-            TeamHome.Players[6].IsSelected = true;
-            _ball.State = BallState.Controlled;
+            if (!isHomeScored)
+            {
+                _ball.Owner = TeamHome.Players[6];
+                TeamHome.Players[6].IsSelected = true;
+                _ball.State = BallState.Controlled;
+            }
+            else
+            {
+                _ball.Owner = TeamAway.Players[6];
+                TeamHome.Players[4].IsSelected = true;
+                _ball.State = BallState.Controlled;
+            }
         }
 
         // reset players and ball position after out
@@ -140,9 +149,9 @@ namespace GalaxyFootball.Core.Concrete
             }
             else
             {
-                //_ball.Owner = TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperAway).FirstOrDefault();
-                //_ball.State = BallState.Controlled;
-                //_ball.Position = _ball.Owner.Position;
+                _ball.Owner = TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperAway).FirstOrDefault();
+                _ball.State = BallState.Controlled;
+                _ball.Position = _ball.Owner.Position;
             }
         }
     }

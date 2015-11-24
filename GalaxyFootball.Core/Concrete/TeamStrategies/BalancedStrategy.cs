@@ -39,70 +39,127 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 else
                     return AttackStrategy(player);
             }
-            //if we ontrol player
+            //if we Control player
             else
             {
-                if(isVerticalDown)
+                //find home or away player for analyze defensive or attack strategy
+                bool isHomePlayer = player.Type.ToString().Contains("Home") ? true : false;
+                bool isDefensive = false;
+                if (GameEngine.CurrentGame.Ball.Owner == null)
+                    isDefensive = true;
+                //find if any of partners is owner of ball => attack strategy else defensive
+                isDefensive = isHomePlayer ? !GameEngine.CurrentGame.TeamHome.Players.Contains(GameEngine.CurrentGame.Ball.Owner)
+                    : !GameEngine.CurrentGame.TeamAway.Players.Contains(GameEngine.CurrentGame.Ball.Owner);
+                //player and partners doesn't have ball - defense strategy
+                if (isDefensive)
                 {
-                    if(isHorizontalRight)
+                    if (isVerticalDown)
                     {
-                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                            GameEngine.CurrentGame.Ball.Position = new Point(player.SpeedPoints / (Double)200 + player.Position.X,
-                                player.SpeedPoints / (Double)200 + player.Position.Y);
-                        return new Point(player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        if (isHorizontalRight)
+                        {
+                            return new Point(player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else if (isHorizontalLeft)
+                        {
+                            return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else
+                        {
+                            return new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                    }
+                    else if (isVerticalUp)
+                    {
+                        if (isHorizontalRight)
+                        {
+                            return new Point(player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else if (isHorizontalLeft)
+                        {
+                            return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else
+                        {
+                            return new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
                     }
                     else if (isHorizontalLeft)
                     {
-                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                            GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X,
-                                player.SpeedPoints / (Double)200 + player.Position.Y);
-                        return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
+                    }
+                    else if (isHorizontalRight)
+                    {
+                        return new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
                     }
                     else
                     {
-                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                            GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
-                        return new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return player.Position;
                     }
-                }
-                else if(isVerticalUp)
-                {
-                    if (isHorizontalRight)
-                    {
-                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                            GameEngine.CurrentGame.Ball.Position = new Point(player.SpeedPoints / (Double)200 + player.Position.X,
-                                -player.SpeedPoints / (Double)200 + player.Position.Y);
-                        return new Point(player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
-                    }
-                    else if (isHorizontalLeft)
-                    {
-                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                            GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X,
-                                -player.SpeedPoints / (Double)200 + player.Position.Y);
-                        return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
-                    }
-                    else
-                    {
-                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                            GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
-                        return new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
-                    }
-                }
-                else if (isHorizontalLeft)
-                {
-                    if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
-                    return new Point(- player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
-                }
-                else if (isHorizontalRight)
-                {
-                    if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
-                    return new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
                 }
                 else
                 {
-                    return player.Position;
+                    if (isVerticalDown)
+                    {
+                        if (isHorizontalRight)
+                        {
+                            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                                GameEngine.CurrentGame.Ball.Position = new Point(player.SpeedPoints / (Double)200 + player.Position.X,
+                                    player.SpeedPoints / (Double)200 + player.Position.Y);
+                            return new Point(player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else if (isHorizontalLeft)
+                        {
+                            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                                GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X,
+                                    player.SpeedPoints / (Double)200 + player.Position.Y);
+                            return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else
+                        {
+                            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                                GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                            return new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                    }
+                    else if (isVerticalUp)
+                    {
+                        if (isHorizontalRight)
+                        {
+                            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                                GameEngine.CurrentGame.Ball.Position = new Point(player.SpeedPoints / (Double)200 + player.Position.X,
+                                    -player.SpeedPoints / (Double)200 + player.Position.Y);
+                            return new Point(player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else if (isHorizontalLeft)
+                        {
+                            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                                GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X,
+                                    -player.SpeedPoints / (Double)200 + player.Position.Y);
+                            return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                        else
+                        {
+                            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                                GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                            return new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        }
+                    }
+                    else if (isHorizontalLeft)
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
+                        return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
+                    }
+                    else if (isHorizontalRight)
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                            GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
+                        return new Point(player.Position.X + player.SpeedPoints / (Double)200, player.Position.Y);
+                    }
+                    else
+                    {
+                        return player.Position;
+                    }
                 }
             }
         }
@@ -113,7 +170,7 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             Point newPosition = player.Position;
 
             //if player without a ball
-            if (GameEngine.CurrentGame.Ball.Owner != null && !GameEngine.CurrentGame.Ball.Owner.Equals(player))
+            if ((GameEngine.CurrentGame.Ball.Owner != null && !GameEngine.CurrentGame.Ball.Owner.Equals(player)))
             {
                 if(player.Type.ToString().Contains("Goalkeeper"))
                 {
@@ -135,36 +192,49 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             }
             else if (GameEngine.CurrentGame.Ball.Owner != null && GameEngine.CurrentGame.Ball.Owner.Equals(player))
             {
-                BallOwnerAttack(player, currentPlayerZone);
-                return newPosition;
+                return BallOwnerAttack(player, currentPlayerZone);
             }
             return newPosition;
         }
 
-        private static void BallOwnerAttack(Player player, PlaygroundZone currentPlayerZone)
+        private static Point BallOwnerAttack(Player player, PlaygroundZone currentPlayerZone)
         {
             List<Player> opponentPlayers = player.Type.ToString().Contains("Home")
                 ? GameEngine.CurrentGame.TeamAway.Players : GameEngine.CurrentGame.TeamHome.Players;
             List<Player> partnerPlayers = player.Type.ToString().Contains("Home")
                 ? GameEngine.CurrentGame.TeamHome.Players : GameEngine.CurrentGame.TeamAway.Players;
-            if(player.Type.ToString().Contains("Goalkeeper"))
-                player.Pass(GameEngine.CurrentGame.Ball, player.FindPartnerForPass());
-            foreach (var p in opponentPlayers)
+            if (player.State != PlayerState.InAction)
             {
-                //if opponent in 15px radius pass the ball to partner
-                if (p.CollisionWithPlayer(player))
+                if (player.Type.ToString().Contains("Goalkeeper"))
                 {
                     player.Pass(GameEngine.CurrentGame.Ball, player.FindPartnerForPass());
-                    break;
+                    return new Point(player.Position.X, player.Position.Y);
+
                 }
-                else
+                else if (opponentPlayers.Where(p => p.CollisionWithPlayer(player)).Count() > 0)
+                {
+                    player.Pass(GameEngine.CurrentGame.Ball, player.FindPartnerForPass());
+                    return new Point(player.Position.X, player.Position.Y);
+                }
+                else if (opponentPlayers.Where(p => p.CollisionWithPlayerClose(player)).Count() > 0)
+                {
+                    if (GameEngine.CurrentGame.Ball.State == BallState.Controlled && player.Position.X > 10)
+                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                    return new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                }
+                else if (opponentPlayers.Where(p => p.CollisionWithPlayer(player)).Count() == 0 && !player.Type.ToString().Contains("Goalkeeper")
+                    && player.Position.X > GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 1).FirstOrDefault().Center.X)
                 {
                     // if no opponents in radius control the ball and attack through the end of current zone
-                    while (currentPlayerZone.CheckForZoneIntersection(player.Position) && GameEngine.CurrentGame.Ball.Owner.Equals(player))
-                        player.Control(GameEngine.CurrentGame.Ball, false, false, true, false);
+                    //while (currentPlayerZone.CheckForZoneIntersection(player.Position) && GameEngine.CurrentGame.Ball.Owner.Equals(player))
+                    //Console.WriteLine(player.Position.X + " | " + player.Position.Y);
+                    //return player.Control(GameEngine.CurrentGame.Ball, false, false, true, false);
+                    if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                        GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
+                    return new Point(-player.SpeedPoints / (Double)200 + player.Position.X, player.Position.Y);
                 }
                 // if player in the last wing attack zone find solution - pass to forward or go to cental zone
-                if (((GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 1).FirstOrDefault().CheckForZoneIntersection(player.Position)
+                else if (((GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 1).FirstOrDefault().CheckForZoneIntersection(player.Position)
                     || GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 3).FirstOrDefault().CheckForZoneIntersection(player.Position))
                     && player.Type.ToString().Contains("Away"))
                     || ((GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 7).FirstOrDefault().CheckForZoneIntersection(player.Position)
@@ -176,25 +246,45 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                     {
                         player.Pass(GameEngine.CurrentGame.Ball,
                             GameEngine.CurrentGame.TeamAway.Players.Where(pl => pl.Type == PlayerType.CentralForwardAway).FirstOrDefault());
-                        break;
+                        return new Point(player.Position.X, player.Position.Y);
                     }
                     else if (player.Type.ToString().Contains("Home") &&
                         player.Type != PlayerType.CentralForwardHome)
                     {
                         player.Pass(GameEngine.CurrentGame.Ball,
                             GameEngine.CurrentGame.TeamHome.Players.Where(pl => pl.Type == PlayerType.CentralForwardHome).FirstOrDefault());
-                        break;
+                        return new Point(player.Position.X, player.Position.Y);
                     }
                     else if (GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 1).FirstOrDefault().CheckForZoneIntersection(player.Position)
                     || GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 7).FirstOrDefault().CheckForZoneIntersection(player.Position))
                     {
-                        player.Control(GameEngine.CurrentGame.Ball, true);
+                        //return player.Control(GameEngine.CurrentGame.Ball, true);
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled && player.Position.X > 10)
+                            GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        return new Point(player.Position.X, -player.SpeedPoints / (Double)200 +  player.Position.Y);
                     }
                     else if (GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 3).FirstOrDefault().CheckForZoneIntersection(player.Position)
                     || GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 9).FirstOrDefault().CheckForZoneIntersection(player.Position))
                     {
-                        player.Control(GameEngine.CurrentGame.Ball, false, true);
+                        //return player.Control(GameEngine.CurrentGame.Ball, false, true);
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled && player.Position.Y < 690)
+                        {
+                            if (player.Type.ToString().Contains("Home")
+                                && GameEngine.CurrentGame.TeamHome.Players
+                                .Where(p => p.Type.ToString().Contains("Forward")).FirstOrDefault().Position.X > player.Position.X)
+                            {
+                                player.Pass(GameEngine.CurrentGame.Ball, GameEngine.CurrentGame.TeamHome.Players
+                                .Where(p => p.Type.ToString().Contains("Forward")).FirstOrDefault());
+                                return new Point(player.Position.X, player.Position.Y);
+                            }
+                            else
+                            {
+                                GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                                return new Point(player.Position.X, player.SpeedPoints / (Double)200 + player.Position.Y);
+                            }
+                        }
                     }
+                    return new Point(player.Position.X, player.Position.Y);
                 }
                 else
                 {
@@ -206,11 +296,21 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                     GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 10).FirstOrDefault().CheckForZoneIntersection(player.Position))))
                     {
                         player.Shoot(GameEngine.CurrentGame.Ball);
+                        return new Point(player.Position.X, player.Position.Y);
                     }
                     else
+                    {
                         player.Pass(GameEngine.CurrentGame.Ball, player.FindPartnerForPass());
+                        return new Point(player.Position.X, player.Position.Y);
+
+                    }
                 }
+
+                return new Point(player.Position.X, player.Position.Y);
+
             }
+            return new Point(player.Position.X, player.Position.Y);
+
         }
 
         private static Point ForwardAttack(Player player, PlaygroundZone currentPlayerZone, ref Point newPosition)
@@ -264,8 +364,8 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             }
             else
             {
-                newPosition.X = 1 / (Double)200 + newPosition.X;
-                newPosition.Y = 1 / (Double)200 + newPosition.Y;
+                newPosition.X = 5 / (Double)200 + newPosition.X;
+                newPosition.Y = 5 / (Double)200 + newPosition.Y;
             }
             return newPosition;
         }
@@ -321,10 +421,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             }
             else
             {
-                newPosition.X = GameEngine.CurrentGame.Ball.Position.X > player.Position.X ? 1 / (Double)200 + newPosition.X
-                       : -1 / (Double)200 + newPosition.X;
-                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 1 / (Double)200 + newPosition.Y
-                    : -1 / (Double)200 + newPosition.Y;
+                newPosition.X = GameEngine.CurrentGame.Ball.Position.X > player.Position.X ? 5 / (Double)200 + newPosition.X
+                       : -5 / (Double)200 + newPosition.X;
+                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 5 / (Double)200 + newPosition.Y
+                    : -5 / (Double)200 + newPosition.Y;
             }
 
             return newPosition;
@@ -402,7 +502,7 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                             newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
                         }
                     }
-                    if (GameEngine.CurrentGame.Playground.Zones.Where(z => z.RightBottom.X == currentPlayerZone.RightBottom.X && !z.Equals(currentPlayerZone)
+                    else if (GameEngine.CurrentGame.Playground.Zones.Where(z => z.RightBottom.X == currentPlayerZone.RightBottom.X && !z.Equals(currentPlayerZone)
                         && z.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position)).Count() > 0
                         && GameEngine.CurrentGame.Ball.Position.X >= player.Position.X)
                     {
@@ -411,9 +511,9 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                             newPosition.X = player.SpeedPoints / (Double)200 + newPosition.X;
                         }
                     }
-                    else if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X)
+                    else if (GameEngine.CurrentGame.Ball.Position.X < player.Position.X)
                     {
-                        newPosition.X = player.SpeedPoints / (Double)400 + newPosition.X;
+                        newPosition.X = -player.SpeedPoints / (Double)400 + newPosition.X;
                         newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)400 + newPosition.Y
                             : -player.SpeedPoints / (Double)400 + newPosition.Y;
                     }
@@ -421,10 +521,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             }
             else
             {
-                newPosition.X = player.Type.ToString().Contains("Home") ? 1 / (Double)200 + newPosition.X
-                       : 1 / (Double)200 + newPosition.X;
-                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 1 / (Double)200 + newPosition.Y
-                    : 1 / (Double)200 + newPosition.Y;
+                newPosition.X = player.Type.ToString().Contains("Home") ? 5 / (Double)200 + newPosition.X
+                       : 5 / (Double)200 + newPosition.X;
+                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 5 / (Double)200 + newPosition.Y
+                    : 5 / (Double)200 + newPosition.Y;
             }
             return newPosition;
         }
@@ -435,10 +535,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             //if ball in current player zone => go to ball
             if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
             {
-                newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)200 + newPosition.X
-                    : -player.SpeedPoints / (Double)200 + newPosition.X;
-                newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
-                    : -player.SpeedPoints / (Double)200 + newPosition.Y;
+                newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)500 + newPosition.X
+                    : -player.SpeedPoints / (Double)500 + newPosition.X;
+                newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)500 + newPosition.Y
+                    : -player.SpeedPoints / (Double)500 + newPosition.Y;
             }
             return newPosition;
         }
@@ -461,10 +561,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 //if ball in current player zone => go to ball
                 if (currentPlayerZone.CheckForZoneIntersection(GameEngine.CurrentGame.Ball.Position))
                 {
-                    newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)20 + newPosition.X
-                        : -player.SpeedPoints / (Double)20 + newPosition.X;
-                    newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)20 + newPosition.Y
-                        : -player.SpeedPoints / (Double)20 + newPosition.Y;
+                    newPosition.X = player.Position.X < GameEngine.CurrentGame.Ball.Position.X ? player.SpeedPoints / (Double)15 + newPosition.X
+                        : -player.SpeedPoints / (Double)15 + newPosition.X;
+                    newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)15 + newPosition.Y
+                        : -player.SpeedPoints / (Double)15 + newPosition.Y;
                 }
                 return newPosition;
             }

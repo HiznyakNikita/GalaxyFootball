@@ -14,11 +14,12 @@ namespace GalaxyFootball.Core.Concrete
     public class Player: INotifyPropertyChanged
     {
         private Playground _playground;
-        private object _lock;
+        private PlayerState _state;
+        private object _lock = new Object();
         private Point _startPosition;
         private Point _position;
         private bool _isSelected;
-        private Thread _actionThread;
+        private static Thread _actionThread;
         private Random r = new Random();
         private bool _isUp = false;
         private bool _isDown = false;
@@ -38,6 +39,7 @@ namespace GalaxyFootball.Core.Concrete
             )
         {
             Name = name;
+            _state = PlayerState.Free;
             Type = type;
             _playground = playground;
             Number = number;
@@ -66,6 +68,24 @@ namespace GalaxyFootball.Core.Concrete
             {
                 _isSelected = value;
                 NotifyPropertyChanged("IsSelected");
+            }
+        }
+
+        public PlayerState State 
+        { 
+            get
+            {
+                lock (_lock)
+                {
+                    return _state;
+                }
+            }
+            set
+            {
+                lock (_lock)
+                {
+                    _state = value;
+                }
             }
         }
 
@@ -115,10 +135,7 @@ namespace GalaxyFootball.Core.Concrete
         {
             get
             {
-                lock (_lock)
-                {
-                    return _position;
-                }
+                return _position;
             }
             set
             {
@@ -180,9 +197,9 @@ namespace GalaxyFootball.Core.Concrete
             {
                 ChangePosition(strategy);
             }
-            catch(Exception)
+            catch(Exception e)
             {
-
+                Console.Write("ll");
             }
         }
 
@@ -213,6 +230,7 @@ namespace GalaxyFootball.Core.Concrete
 
         public void Shoot(Ball ball)
         {
+            State = PlayerState.InAction;
             if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
             {
                 _actionThread = new Thread(new ParameterizedThreadStart(ShootThreadMethod));
@@ -263,16 +281,27 @@ namespace GalaxyFootball.Core.Concrete
                     }
                 }
             }
-            _actionThread.Abort();
+            ;
+            State = PlayerState.Free;
         }
 
         public void Pick(Ball ball)
         {
-            ball.State = BallState.Controlled;
-            if (ball.Owner != null && !ball.Owner.Equals(this) && ball.IsCanPick(Position))
+            State = PlayerState.InAction;
+            //if (_actionThread != null && _actionThread.ThreadState != ThreadState.Aborted)
+            //    ;
+            _actionThread = new Thread(new ParameterizedThreadStart(PickThreadMethod));
+            _actionThread.Start(ball);
+        }
+
+        private void PickThreadMethod(object param)
+        {
+            Ball ball = param as Ball;
+            if (ball.Owner != null && !ball.Owner.Equals(this) && ball.State != BallState.Picked && ball.IsCanPick(Position))
             {
                 if (DefensePoints * r.NextDouble() > ball.Owner.DribblePoints * r.NextDouble())
                 {
+                    ball.State = BallState.Controlled;
                     ball.Owner.LoseBall();
                     ball.Owner = this;
                     ball.Pick();
@@ -280,6 +309,8 @@ namespace GalaxyFootball.Core.Concrete
             }
             else if (ball.Owner == null && ball.IsCanPick(Position))
             {
+                ball.State = BallState.Controlled;
+
                 ball.Owner.LoseBall();
                 ball.Owner = this;
                 ball.Pick();
@@ -288,19 +319,25 @@ namespace GalaxyFootball.Core.Concrete
             {
                 _position = new Point(_startPosition.X, _startPosition.Y);
             }
+
+            ;
+            State = PlayerState.Free;
         }
 
         public void Pass(Ball ball, Player partner, bool isUp = false, bool isDown = false, bool isRight = false, bool isLeft = false)
         {
-            _isUp = isUp;
-            _isDown = isDown;
-            _isRight = isRight;
-            _isLeft = isLeft;
-            if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
-            {
-                _actionThread  = new Thread(new ParameterizedThreadStart(PassThreadMethod));
-                _actionThread.Start(new Tuple<Ball, Player>(ball, partner));
-            }
+            State = PlayerState.InAction;
+            //if(_actionThread != null && _actionThread.ThreadState != ThreadState.Aborted)
+            //    ;
+                _isUp = isUp;
+                _isDown = isDown;
+                _isRight = isRight;
+                _isLeft = isLeft;
+                if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                {
+                    _actionThread = new Thread(new ParameterizedThreadStart(PassThreadMethod));
+                    _actionThread.Start(new Tuple<Ball, Player>(ball, partner));
+                }
         }
 
         private void PassThreadMethod(object param)
@@ -325,42 +362,89 @@ namespace GalaxyFootball.Core.Concrete
                         yPos = tuple.Item2.Position.Y > tuple.Item1.Position.Y ? 5 + tuple.Item1.Position.Y : -5 + tuple.Item1.Position.Y;
                     tuple.Item1.Position = new Point(xPos, yPos);
                 }
-                tuple.Item1.Owner = tuple.Item2;
-                tuple.Item2.IsSelected = true;
-                this.IsSelected = false;
-                tuple.Item1.State = BallState.Controlled;
-            }
-            _actionThread.Abort();
-        }
-
-        public void Control(
-            Ball ball, 
-            bool isVerticalUp = false, 
-            bool isVerticalDown = false, 
-            bool isHorizontalAttack = false, 
-            bool isHorizontalDefend = false)
-        {
-            ball.State = BallState.Controlled;
-            if (ball.Owner != null && ball.Owner.Equals(this))
-            {
-                //control the ball while somebody doesn't picked it 
-                while (ball.Owner.Equals(this))
+                if (Type.ToString().Contains("Home"))
                 {
-                    if (isHorizontalAttack)
-                        ball.Position = Type.ToString().Contains("Home") ? new Point(SpeedPoints / 10 + Position.X, Position.Y) 
-                            : new Point(- SpeedPoints / 10 + Position.X, Position.Y);
-                    if (isHorizontalDefend)
-                        ball.Position = Type.ToString().Contains("Home") ? new Point(- SpeedPoints / 10 + Position.X, Position.Y) 
-                            : new Point(SpeedPoints / 10 + Position.X, Position.Y);
-                    if (isVerticalDown)
-                        ball.Position = new Point(Position.X, SpeedPoints / 10 + Position.Y);
-                    if (isVerticalUp)
-                    {
-                        ball.Position = new Point(Position.X, - SpeedPoints / 10 + Position.Y);
-                    }
+                    tuple.Item1.Owner = tuple.Item2;
+                    tuple.Item2.IsSelected = true;
+                    this.IsSelected = false;
+                    tuple.Item1.State = BallState.Controlled;
+                }
+                else
+                {
+                    tuple.Item1.Owner = tuple.Item2;
+                    tuple.Item1.State = BallState.Controlled;
                 }
             }
+           ;
+           State = PlayerState.Free;
         }
+
+        //public Point Control(
+        //    Ball ball, 
+        //    bool isVerticalUp = false, 
+        //    bool isVerticalDown = false, 
+        //    bool isHorizontalAttack = false, 
+        //    bool isHorizontalDefend = false)
+        //{
+        //    _isUp = isVerticalUp;
+        //    _isDown = isVerticalDown;
+        //    _isLeft = isHorizontalDefend;
+        //    _isRight = isHorizontalAttack;
+        //    //_actionThread = new Thread(new ParameterizedThreadStart(ControlThreadMethod));
+        //    //_actionThread.Start(ball);
+        //   return ControlThreadMethod(ball);
+        //}
+
+        //private Point ControlThreadMethod(object param)
+        //{
+        //    State = PlayerState.InAction;
+
+        //    Ball ball = param as Ball;
+        //    ball.State = BallState.Controlled;
+        //    if (ball.Owner != null && ball.Owner.Equals(this))
+        //    {
+        //        //control the ball while somebody doesn't picked it 
+        //        //while (ball.Owner.Equals(this))
+        //        //{
+        //            if (_isRight)
+        //            {
+        //                Position = Type.ToString().Contains("Home") ? new Point(SpeedPoints / (Double)200 + Position.X, Position.Y)
+        //                    : new Point(-SpeedPoints / (Double)200 + Position.X, Position.Y);
+        //                ball.Position = new Point(Position.X, Position.Y);
+        //                State = PlayerState.Free;
+
+        //                return Position;
+        //            }
+        //            if (_isLeft)
+        //            {
+        //                Position = Type.ToString().Contains("Home") ? new Point(SpeedPoints / (Double)200 + Position.X, Position.Y)
+        //                    : new Point(-SpeedPoints / (Double)200 + Position.X, Position.Y);
+        //                ball.Position = new Point(Position.X, Position.Y);
+        //                State = PlayerState.Free;
+
+        //                return Position;
+        //            }
+        //            if (_isDown)
+        //            {
+        //                Position = new Point(Position.X, SpeedPoints / (Double)200 + Position.Y);
+        //                ball.Position = new Point(Position.X, Position.Y);
+        //                State = PlayerState.Free;
+
+        //                return Position;
+        //            }
+        //            if (_isUp)
+        //            {
+        //                Position = new Point(Position.X, -SpeedPoints / (Double)200 + Position.Y);
+        //                ball.Position = new Point(Position.X, Position.Y);
+        //                State = PlayerState.Free;
+
+        //                return Position;
+        //            }
+        //      //  }
+        //    }
+        //    State = PlayerState.Free;
+        //    return Position;
+        //}
 
         #endregion
 
@@ -368,7 +452,16 @@ namespace GalaxyFootball.Core.Concrete
 
         public bool CollisionWithPlayer(Player player)
         {
-            if (Math.Abs(Position.X - player.Position.X) < 15 && Math.Abs(Position.Y - player.Position.Y) < 15)
+            if ((Math.Abs(Position.X - player.Position.X) < 35 && Math.Abs(Position.Y - player.Position.Y) < 35) 
+                && (Math.Abs(Position.X - player.Position.X) > 10 && Math.Abs(Position.Y - player.Position.Y) > 10))
+                return true;
+            else
+                return false;
+        }
+
+        public bool CollisionWithPlayerClose(Player player)
+        {
+            if ((Math.Abs(Position.X - player.Position.X) < 10 && Math.Abs(Position.Y - player.Position.Y) < 10))
                 return true;
             else
                 return false;
@@ -382,9 +475,7 @@ namespace GalaxyFootball.Core.Concrete
         {
             if(GameEngine.CurrentGame.Ball.Owner != null && GameEngine.CurrentGame.Ball.Owner.Equals(this))
             {
-                GameEngine.CurrentGame.Ball.Owner = null;
-                if(_actionThread != null)
-                    _actionThread.Abort();
+                _position = new Point(_position.X-10, _position.Y-10);
             }
         }
 
@@ -394,72 +485,74 @@ namespace GalaxyFootball.Core.Concrete
             bool isHorizontalRight = false,
             bool isHorizontalLeft = false)
         {
-            if(Type.ToString().Contains("Home"))
-            {
-                List<Player> results = new List<Player>();
-                foreach(var p in GameEngine.CurrentGame.TeamHome.Players)
+                if (Type.ToString().Contains("Home"))
                 {
-                    if(isVerticalUp)
+                    List<Player> results = new List<Player>();
+                    foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
                     {
-                        if(isHorizontalRight)
+                        if (isVerticalUp)
                         {
-                            if (p.Position.X > Position.X && p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
+                            if (isHorizontalRight)
+                            {
+                                if (p.Position.X > Position.X && p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
+                                    results.Add(p);
+                            }
+                            else if (isHorizontalLeft)
+                            {
+                                if (p.Position.X < Position.X && p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
+                                    results.Add(p);
+                            }
+                            else if (p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
                                 results.Add(p);
                         }
-                        else if(isHorizontalLeft)
+                        else if (isVerticalDown)
                         {
-                            if (p.Position.X < Position.X && p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
+                            if (isHorizontalRight)
+                            {
+                                if (p.Position.X > Position.X && p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
+                                    results.Add(p);
+                            }
+                            else if (isHorizontalLeft)
+                            {
+                                if (p.Position.X < Position.X && p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
+                                    results.Add(p);
+                            }
+                            else if (p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
                                 results.Add(p);
                         }
-                        else if (p.Position.Y < Position.Y && !CheckForIntersectionInZone(p))
-                            results.Add(p);
-                    }
-                    else if (isVerticalDown)
-                    {
-                        if (isHorizontalRight)
+                        else if (isHorizontalRight)
                         {
-                            if (p.Position.X > Position.X && p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
+                            if (p.Position.X > Position.X && !CheckForIntersectionInZone(p))
                                 results.Add(p);
                         }
                         else if (isHorizontalLeft)
                         {
-                            if (p.Position.X < Position.X && p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
+                            if (p.Position.X < Position.X && !CheckForIntersectionInZone(p))
                                 results.Add(p);
                         }
-                        else if (p.Position.Y > Position.Y && !CheckForIntersectionInZone(p))
-                            results.Add(p);
                     }
-                    else if (isHorizontalRight)
-                    {
-                        if (p.Position.X > Position.X && !CheckForIntersectionInZone(p))
-                            results.Add(p);
-                    }
-                    else if(isHorizontalLeft)
-                    {
-                        if (p.Position.X < Position.X && !CheckForIntersectionInZone(p))
-                            results.Add(p);
-                    }
+                    //Select player with minium x and y 
+                    Player resPlayer = results.Count > 0 ? results.Aggregate((curMin, x)
+                        => (curMin == null || Math.Sqrt(Math.Abs(x.Position.X - Position.X) * Math.Abs(x.Position.X - Position.X)
+                        + Math.Abs(x.Position.Y - Position.Y) * Math.Abs(x.Position.Y - Position.Y))
+                        < Math.Sqrt(Math.Abs(curMin.Position.X - Position.X) * Math.Abs(curMin.Position.X - Position.X)
+                        + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y)) ? x : curMin))
+                        : GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault() != null
+                        ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault()
+                        : FindNearestPlayer();
+                    return resPlayer;
                 }
-                //Select player with minium x and y 
-                Player resPlayer = results.Count > 0 ? results.Aggregate((curMin, x)
-                    => (curMin == null || Math.Sqrt(Math.Abs(x.Position.X - Position.X) * Math.Abs(x.Position.X - Position.X)
-                    + Math.Abs(x.Position.Y - Position.Y) * Math.Abs(x.Position.Y - Position.Y))
-                    < Math.Sqrt(Math.Abs(curMin.Position.X - Position.X) * Math.Abs(curMin.Position.X - Position.X)
-                    + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y)) ? x : curMin))
-                    : GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault() != null 
-                    ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault()
-                    : FindNearestPlayer();
-                return resPlayer;
-            }
-            else
-            {
-                foreach (var p in GameEngine.CurrentGame.TeamAway.Players)
+                else
                 {
-                    if (p.Position.X < Position.X)
-                        return p;
+                    Player resPlayer = GameEngine.CurrentGame.TeamAway.Players.Aggregate((curMin, x)
+                        => ((!x.Equals(this) && !curMin.Equals(this) && Math.Sqrt(Math.Abs(x.Position.X - Position.X) * Math.Abs(x.Position.X - Position.X)
+                        + Math.Abs(x.Position.Y - Position.Y) * Math.Abs(x.Position.Y - Position.Y))
+                        < Math.Sqrt(Math.Abs(curMin.Position.X - Position.X) * Math.Abs(curMin.Position.X - Position.X)
+                        + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y))) ? x : curMin));
+                    if (resPlayer == null || resPlayer.Equals(this))
+                        resPlayer = FindNearestPlayer();
+                    return resPlayer;
                 }
-                return GameEngine.CurrentGame.TeamAway.Players.FirstOrDefault();
-            }
         }
 
         public Player FindNearestPlayer()
@@ -467,12 +560,30 @@ namespace GalaxyFootball.Core.Concrete
             Player res = this;
             double xDif = 400;
             double yDif = 400;
-            foreach(var p in GameEngine.CurrentGame.TeamHome.Players)
+            if (Type.ToString().Contains("Home"))
             {
-                if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
-                    res = p;
+                foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+                {
+                    if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
+                        res = p;
+
+                }
             }
-            return res;
+            else
+            {
+                foreach (var p in GameEngine.CurrentGame.TeamAway.Players)
+                {
+                    if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
+                        res = p;
+
+                }
+            }
+                return res;
+        }
+
+        public void AbortCurrentAction()
+        {
+            _position = new Point(_position.X, _position.Y);
         }
 
         public void Reset()

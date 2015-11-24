@@ -24,7 +24,7 @@ namespace GalaxyFootball.Core
         public Ball()
         {
             //set start position - playground center
-            _position = new Point(510, 349);
+            _position = new Point(525, 349);
             State = BallState.Controlled;
         }
 
@@ -117,9 +117,13 @@ namespace GalaxyFootball.Core
                                 _thread.Start();
                         }
                         catch (ThreadStateException)
-                        { }
+                        {
+                            int a = 0;
+                        }
                         catch (ThreadStartException)
-                        { }
+                        {
+                            int a = 0;
+                        }
                         OnPositionChanged();
                         NotifyPropertyChanged("Position");
                     }
@@ -172,11 +176,13 @@ namespace GalaxyFootball.Core
 
         public void Notify()
         {
+            Thread.Sleep(100);
             foreach(var o in _observers)
             {
                 o.Update();
             }
-            _thread.Abort();
+            //if(_thread != null && _thread.ThreadState != ThreadState.Aborted)
+            //    _thread.Abort();
         }
 
         public bool IsCanPick(Point position)
@@ -196,7 +202,16 @@ namespace GalaxyFootball.Core
 
         public void Pick()
         {
+            foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+                p.AbortCurrentAction();
+            foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+                p.AbortCurrentAction();
+            State = BallState.Controlled;
             _position = new Point(Owner.Position.X, Owner.Position.Y);
+            _thread.Abort();
+
+            Notify();
+            OnPositionChanged();
         }
 
         #region INotifyPropertyChanged
