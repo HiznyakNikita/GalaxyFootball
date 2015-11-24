@@ -64,31 +64,31 @@ namespace GalaxyFootball
             this.DataContext = _model = new MainWindowVM();
             (this.DataContext as MainWindowVM).PlayerPositionsChanged += MainWindow_PlayerPositionsChanged;
             InitializeComponent();
-            playerHomeMarker1 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[0]));
-            playerHomeMarker2 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[1]));
-            playerHomeMarker3 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[2]));
+            playerHomeMarker1 = new PlayerMarkerRed(new PlayerMarkerVM(1, GameEngine.CurrentGame.TeamHome.Players[0]));
+            playerHomeMarker2 = new PlayerMarkerRed(new PlayerMarkerVM(4, GameEngine.CurrentGame.TeamHome.Players[1]));
+            playerHomeMarker3 = new PlayerMarkerRed(new PlayerMarkerVM(2, GameEngine.CurrentGame.TeamHome.Players[2]));
 
-            playerHomeMarker4 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[3]));
+            playerHomeMarker4 = new PlayerMarkerRed(new PlayerMarkerVM(3, GameEngine.CurrentGame.TeamHome.Players[3]));
 
-            playerHomeMarker5 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[4]));
-            playerHomeMarker6 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[5]));
-            playerHomeMarker7 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[6]));
-            playerHomeMarker8 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[7]));
-            playerHomeMarker9 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[8]));
-            playerHomeMarker10 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[9]));
-            playerHomeMarker11 = new PlayerMarkerRed(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamHome.Players[10]));
+            playerHomeMarker5 = new PlayerMarkerRed(new PlayerMarkerVM(5, GameEngine.CurrentGame.TeamHome.Players[4]));
+            playerHomeMarker6 = new PlayerMarkerRed(new PlayerMarkerVM(6, GameEngine.CurrentGame.TeamHome.Players[5]));
+            playerHomeMarker7 = new PlayerMarkerRed(new PlayerMarkerVM(14, GameEngine.CurrentGame.TeamHome.Players[6]));
+            playerHomeMarker8 = new PlayerMarkerRed(new PlayerMarkerVM(7, GameEngine.CurrentGame.TeamHome.Players[7]));
+            playerHomeMarker9 = new PlayerMarkerRed(new PlayerMarkerVM(11, GameEngine.CurrentGame.TeamHome.Players[8]));
+            playerHomeMarker10 = new PlayerMarkerRed(new PlayerMarkerVM(10, GameEngine.CurrentGame.TeamHome.Players[9]));
+            playerHomeMarker11 = new PlayerMarkerRed(new PlayerMarkerVM(9, GameEngine.CurrentGame.TeamHome.Players[10]));
 
-            playerAwayMarker1 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[0]));
-            playerAwayMarker2 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[1]));
-            playerAwayMarker3 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[2]));
-            playerAwayMarker4 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[3]));
-            playerAwayMarker5 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[4]));
-            playerAwayMarker6 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[5]));
-            playerAwayMarker7 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[6]));
+            playerAwayMarker1 = new PlayerMarkerBlack(new PlayerMarkerVM(1, GameEngine.CurrentGame.TeamAway.Players[0]));
+            playerAwayMarker2 = new PlayerMarkerBlack(new PlayerMarkerVM(4, GameEngine.CurrentGame.TeamAway.Players[1]));
+            playerAwayMarker3 = new PlayerMarkerBlack(new PlayerMarkerVM(3, GameEngine.CurrentGame.TeamAway.Players[2]));
+            playerAwayMarker4 = new PlayerMarkerBlack(new PlayerMarkerVM(2, GameEngine.CurrentGame.TeamAway.Players[3]));
+            playerAwayMarker5 = new PlayerMarkerBlack(new PlayerMarkerVM(5, GameEngine.CurrentGame.TeamAway.Players[4]));
+            playerAwayMarker6 = new PlayerMarkerBlack(new PlayerMarkerVM(7, GameEngine.CurrentGame.TeamAway.Players[5]));
+            playerAwayMarker7 = new PlayerMarkerBlack(new PlayerMarkerVM(6, GameEngine.CurrentGame.TeamAway.Players[6]));
             playerAwayMarker8 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[7]));
-            playerAwayMarker9 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[8]));
-            playerAwayMarker10 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[9]));
-            playerAwayMarker11 = new PlayerMarkerBlack(new PlayerMarkerVM(8, GameEngine.CurrentGame.TeamAway.Players[10]));
+            playerAwayMarker9 = new PlayerMarkerBlack(new PlayerMarkerVM(9, GameEngine.CurrentGame.TeamAway.Players[8]));
+            playerAwayMarker10 = new PlayerMarkerBlack(new PlayerMarkerVM(10, GameEngine.CurrentGame.TeamAway.Players[9]));
+            playerAwayMarker11 = new PlayerMarkerBlack(new PlayerMarkerVM(22, GameEngine.CurrentGame.TeamAway.Players[10]));
 
 
             _model.Game.TeamHome.Players[6].IsSelected = true;

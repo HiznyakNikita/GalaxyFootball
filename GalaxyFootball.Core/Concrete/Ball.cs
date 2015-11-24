@@ -144,7 +144,13 @@ namespace GalaxyFootball.Core
         {
             if (GoalScored != null)
             {
-                bool isHomeScored = Owner.Type.ToString().Contains("Home");
+                bool isHomeScored = false;
+                if (Owner.Type.ToString().Contains("Home") && Owner.Type == PlayerType.GoalkeeperHome)
+                    isHomeScored = false;
+                else if (Owner.Type.ToString().Contains("Home") && Owner.Type != PlayerType.GoalkeeperHome)
+                    isHomeScored = true;
+                else
+                    isHomeScored = false;
                 GoalScored(this, new GoalScoredEventArgs(isHomeScored,Owner));
             }
         }
@@ -153,7 +159,13 @@ namespace GalaxyFootball.Core
         {
             if (OutOfPlayground != null)
             {
-                bool isHomeSideOut = !Owner.Type.ToString().Contains("Home");
+                bool isHomeSideOut = true;
+                if (Owner.Type.ToString().Contains("Home") && Owner.Type == PlayerType.GoalkeeperHome)
+                    isHomeSideOut = true;
+                else if (Owner.Type.ToString().Contains("Home") && Owner.Type != PlayerType.GoalkeeperHome)
+                    isHomeSideOut = false;
+                else
+                    isHomeSideOut = true;
                 OutOfPlayground(this, new OutOfPlaygroundEventArgs(isHomeSideOut));
             }
         }

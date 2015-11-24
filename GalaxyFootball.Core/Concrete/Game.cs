@@ -144,13 +144,15 @@ namespace GalaxyFootball.Core.Concrete
             if(isHomeSideOut)
             {
                 _ball.Owner = TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperHome).FirstOrDefault();
+                _ball.Owner.IsSelected = true;
                 _ball.State = BallState.Controlled;
                 _ball.Position = _ball.Owner.Position;
             }
             else
             {
-                _ball.Owner = TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperAway).FirstOrDefault();
+                _ball.Owner = TeamAway.Players.Where(p => p.Type == PlayerType.GoalkeeperAway).FirstOrDefault();
                 _ball.State = BallState.Controlled;
+                TeamHome.Players[4].IsSelected = true;
                 _ball.Position = _ball.Owner.Position;
             }
         }

@@ -165,9 +165,9 @@ namespace GalaxyFootball.ViewModels
 
         void Ball_OutOfPlayground(object sender, EventArgs e)
         {
-            _game.ResetPositionsAfterGoal();
-            OnPlayerPositionChanged();
             _game.ResetPositionsAfterOut((e as OutOfPlaygroundEventArgs).IsHomeSideOut);
+            OnPlayerPositionChanged();
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
