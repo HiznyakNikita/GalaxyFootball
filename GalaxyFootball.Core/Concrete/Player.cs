@@ -164,6 +164,7 @@ namespace GalaxyFootball.Core.Concrete
                             _position.X = value.X;
                     }
                 }
+                NotifyPropertyChanged("Position");
             }
         }
 
@@ -222,6 +223,7 @@ namespace GalaxyFootball.Core.Concrete
             _position = position;
             // do this for independent startPoint and point values
             _startPosition = new Point(position.X,position.Y);
+            NotifyPropertyChanged("Position");
         }
 
         #endregion
@@ -244,7 +246,7 @@ namespace GalaxyFootball.Core.Concrete
             ball.State = BallState.Shootted;
             if (ball.Owner != null && ball.Owner.Equals(this))
             {
-                if (ShootAccuracyPoints > 0 && ShootAccuracyPoints < 50)
+                if (ShootAccuracyPoints > 0 && ShootAccuracyPoints <= 50)
                 {
                     double yFinishPos = r.Next(300, 398);
                     while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
@@ -254,9 +256,11 @@ namespace GalaxyFootball.Core.Concrete
                         double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 15 + ball.Position.Y : ShootPowerPoints / 15 + ball.Position.Y;
                         double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 15 + ball.Position.X : -ShootPowerPoints / 15 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
+                        if (ball.Position.X <= 30 || ball.Position.X >= 1000)
+                            break;
                     }
                 }
-                if (ShootAccuracyPoints > 50 && ShootAccuracyPoints < 70)
+                if (ShootAccuracyPoints > 50 && ShootAccuracyPoints <= 70)
                 {
                     double yFinishPos = r.Next(260, 430);
                     while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
@@ -266,9 +270,11 @@ namespace GalaxyFootball.Core.Concrete
                         double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 15 + ball.Position.Y : ShootPowerPoints / 15 + ball.Position.Y;
                         double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 15  + ball.Position.X: -ShootPowerPoints / 15 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
+                        if (ball.Position.X <= 30 || ball.Position.X >= 1000)
+                            break;
                     }
                 }
-                if (ShootAccuracyPoints > 70 && ShootAccuracyPoints < 100)
+                if (ShootAccuracyPoints > 70 && ShootAccuracyPoints <= 100)
                 {
                     double yFinishPos = r.Next(233, 466);
                     while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
@@ -278,6 +284,8 @@ namespace GalaxyFootball.Core.Concrete
                         double yPos = ball.Position.Y > yFinishPos ? - ShootPowerPoints / 15 + ball.Position.Y: ShootPowerPoints / 15 + ball.Position.Y;
                         double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 15  + ball.Position.X: - ShootPowerPoints / 15 + ball.Position.X;
                         ball.Position = new Point(xPos, yPos);
+                        if (ball.Position.X <= 30 || ball.Position.X >= 1000)
+                            break;
                     }
                 }
             }
@@ -302,8 +310,11 @@ namespace GalaxyFootball.Core.Concrete
                 if (DefensePoints * r.NextDouble() > ball.Owner.DribblePoints * r.NextDouble())
                 {
                     ball.State = BallState.Controlled;
+                    _position = new Point(_position.X + 10, _position.Y + 10);
                     ball.Owner.LoseBall();
                     ball.Owner = this;
+                    State = PlayerState.Free;
+
                     ball.Pick();
                 }
             }
@@ -313,6 +324,8 @@ namespace GalaxyFootball.Core.Concrete
 
                 ball.Owner.LoseBall();
                 ball.Owner = this;
+                State = PlayerState.Free;
+
                 ball.Pick();
             }
             if (Type.ToString().Contains("Goalkeeper"))
@@ -321,7 +334,6 @@ namespace GalaxyFootball.Core.Concrete
             }
 
             ;
-            State = PlayerState.Free;
         }
 
         public void Pass(Ball ball, Player partner, bool isUp = false, bool isDown = false, bool isRight = false, bool isLeft = false)
@@ -333,7 +345,7 @@ namespace GalaxyFootball.Core.Concrete
                 _isDown = isDown;
                 _isRight = isRight;
                 _isLeft = isLeft;
-                if (GameEngine.CurrentGame.Ball.State == BallState.Controlled)
+                if (GameEngine.CurrentGame.Ball.State == BallState.Controlled && GameEngine.CurrentGame.Ball.Owner == this)
                 {
                     _actionThread = new Thread(new ParameterizedThreadStart(PassThreadMethod));
                     _actionThread.Start(new Tuple<Ball, Player>(ball, partner));

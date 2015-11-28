@@ -109,10 +109,12 @@ namespace GalaxyFootball.Core.Concrete
             _ball.Reset();
             foreach (Player p in TeamHome.Players)
             {
+                p.IsSelected = false;
                 p.Reset();
             }
             foreach (Player p in TeamAway.Players)
             {
+                p.IsSelected = false;
                 p.Reset();
             }
             if (!isHomeScored)

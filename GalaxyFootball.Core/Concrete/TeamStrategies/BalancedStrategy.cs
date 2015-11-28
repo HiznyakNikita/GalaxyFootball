@@ -213,14 +213,23 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 }
                 else if (opponentPlayers.Where(p => p.CollisionWithPlayer(player)).Count() > 0)
                 {
-                    player.Pass(GameEngine.CurrentGame.Ball, player.FindPartnerForPass());
-                    return new Point(player.Position.X, player.Position.Y);
+                    if (opponentPlayers.Where(p => p.CollisionWithPlayer(player.FindPartnerForPass())).Count() == 0)
+                    {
+                        player.Pass(GameEngine.CurrentGame.Ball, player.FindPartnerForPass());
+                        return new Point(player.Position.X, player.Position.Y);
+                    }
+                    else
+                    {
+                        if (GameEngine.CurrentGame.Ball.State == BallState.Controlled && player.Position.X > 10)
+                            GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)100 + player.Position.X, player.Position.Y);
+                        return new Point(-player.SpeedPoints / (Double)100 + player.Position.X, player.Position.Y);
+                    }
                 }
                 else if (opponentPlayers.Where(p => p.CollisionWithPlayerClose(player)).Count() > 0)
                 {
                     if (GameEngine.CurrentGame.Ball.State == BallState.Controlled && player.Position.X > 10)
-                        GameEngine.CurrentGame.Ball.Position = new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
-                    return new Point(player.Position.X, -player.SpeedPoints / (Double)200 + player.Position.Y);
+                        GameEngine.CurrentGame.Ball.Position = new Point(-player.SpeedPoints / (Double)100 + player.Position.X, player.Position.Y);
+                    return new Point(-player.SpeedPoints / (Double)100 + player.Position.X, player.Position.Y);
                 }
                 else if (opponentPlayers.Where(p => p.CollisionWithPlayer(player)).Count() == 0 && !player.Type.ToString().Contains("Goalkeeper")
                     && player.Position.X > GameEngine.CurrentGame.Playground.Zones.Where(z => z.Id == 1).FirstOrDefault().Center.X)
@@ -631,10 +640,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             }
             else
             {
-                newPosition.X = player.Type.ToString().Contains("Home") ? 2 / (Double)200 + newPosition.X
-                       : 2 / (Double)200 + newPosition.X;
-                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 2 / (Double)200 + newPosition.Y
-                    : -2 / (Double)200 + newPosition.Y;
+                newPosition.X = player.Type.ToString().Contains("Home") ? 70 / (Double)100 + newPosition.X
+                       : 70 / (Double)100 + newPosition.X;
+                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 70 / (Double)100 + newPosition.Y
+                    : -70 / (Double)100 + newPosition.Y;
             }
             return newPosition;
         }
@@ -697,10 +706,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             }
             else
             {
-                newPosition.X = player.Type.ToString().Contains("Home") ? 2 / (Double)200 + newPosition.X
-                       : 2 / (Double)200 + newPosition.X;
-                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 2 / (Double)200 + newPosition.Y
-                    : -2 / (Double)200 + newPosition.Y;
+                newPosition.X = player.Type.ToString().Contains("Home") ? 70 / (Double)100 + newPosition.X
+                       : 70 / (Double)100 + newPosition.X;
+                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 70 / (Double)100 + newPosition.Y
+                    : -70 / (Double)100 + newPosition.Y;
             }
             return newPosition;
         }
@@ -775,10 +784,10 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
             }
             else
             {
-                newPosition.X = player.Type.ToString().Contains("Home") ? 2 / (Double)200 + newPosition.X
-                       : 2 / (Double)200 + newPosition.X;
-                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 2 / (Double)200 + newPosition.Y
-                    : -2 / (Double)200 + newPosition.Y;
+                newPosition.X = player.Type.ToString().Contains("Home") ? 70 / (Double)100 + newPosition.X
+                       : 70 / (Double)100 + newPosition.X;
+                newPosition.Y = GameEngine.CurrentGame.Ball.Position.Y > player.Position.Y ? 70 / (Double)100 + newPosition.Y
+                    : -70 / (Double)100 + newPosition.Y;
             }
             return newPosition;
         }

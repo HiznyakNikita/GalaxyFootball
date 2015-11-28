@@ -25,6 +25,7 @@ namespace GalaxyFootball.Core
         {
             //set start position - playground center
             _position = new Point(525, 349);
+            NotifyPropertyChanged("Position");
             State = BallState.Controlled;
         }
 
@@ -71,15 +72,18 @@ namespace GalaxyFootball.Core
                                 _isOutOfPlayground = true;
                             }
                         }
-                        else
+                        else if (value.X >= 20)
                         {
                             _isOutOfPlayground = false;
                             _position.X = value.X;
                         }
-                        if (value.Y < 20)
-                            _position.Y = 20;
                         else
-                            _position.Y = value.Y;
+                        {
+                            if (value.Y < 20)
+                                _position.Y = 20;
+                            else
+                                _position.Y = value.Y;
+                        }
                     }
                     else
                     {
@@ -145,9 +149,9 @@ namespace GalaxyFootball.Core
             if (GoalScored != null)
             {
                 bool isHomeScored = false;
-                if (Owner.Type.ToString().Contains("Home") && Owner.Type == PlayerType.GoalkeeperHome)
+                if (_position.X <= 30)
                     isHomeScored = false;
-                else if (Owner.Type.ToString().Contains("Home") && Owner.Type != PlayerType.GoalkeeperHome)
+                else if (_position.X >= 1000)
                     isHomeScored = true;
                 else
                     isHomeScored = false;
@@ -160,10 +164,10 @@ namespace GalaxyFootball.Core
             if (OutOfPlayground != null)
             {
                 bool isHomeSideOut = true;
-                if (Owner.Type.ToString().Contains("Home") && Owner.Type == PlayerType.GoalkeeperHome)
-                    isHomeSideOut = true;
-                else if (Owner.Type.ToString().Contains("Home") && Owner.Type != PlayerType.GoalkeeperHome)
+                if (_position.X >= 1000)
                     isHomeSideOut = false;
+                else if (_position.X <= 30)
+                    isHomeSideOut = true;
                 else
                     isHomeSideOut = true;
                 OutOfPlayground(this, new OutOfPlaygroundEventArgs(isHomeSideOut));
@@ -215,10 +219,18 @@ namespace GalaxyFootball.Core
         public void Pick()
         {
             foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+            {
                 p.AbortCurrentAction();
-            foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+                if (Owner.Type.ToString().Contains("GoalkeeperHome"))
+                    p.IsSelected = false;
+            }
+            foreach (var p in GameEngine.CurrentGame.TeamAway.Players)
+            {
                 p.AbortCurrentAction();
+            }
             State = BallState.Controlled;
+            if(Owner.Type.ToString().Contains("GoalkeeperHome"))
+                Owner.IsSelected = true;
             _position = new Point(Owner.Position.X, Owner.Position.Y);
             _thread.Abort();
 
