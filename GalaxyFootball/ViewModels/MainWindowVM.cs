@@ -84,7 +84,7 @@ namespace GalaxyFootball.ViewModels
             homeTeamPlayers.Add(playerHome5); homeTeamPlayers.Add(playerHome6);
             homeTeamPlayers.Add(playerHome7); homeTeamPlayers.Add(playerHome8);
             homeTeamPlayers.Add(playerHome9); homeTeamPlayers.Add(playerHome10); homeTeamPlayers.Add(playerHome11);
-            Player playerAway1 = new Player("De Gea", PlayerType.GoalkeeperAway, _playground, 99, 70, 90, 50, 85, 80);
+            Player playerAway1 = new Player("De Gea", PlayerType.GoalkeeperAway, _playground, 1, 70, 90, 50, 85, 80);
             Player playerAway2 = new Player("Blind", PlayerType.LeftDefenderAway, _playground, 2, 70, 80, 70, 85, 80);
             Player playerAway3 = new Player("Darmian", PlayerType.RightDefenderAway, _playground, 3, 70, 85, 80, 85, 80);
             Player playerAway4 = new Player("Rojo", PlayerType.CentralDefenderAwayLeft, _playground, 4, 70, 90, 50, 85, 80);

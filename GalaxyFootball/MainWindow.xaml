@@ -17,7 +17,7 @@
         <KeyBinding Command="{Binding ChangePlayerCommand}" Key="Q"></KeyBinding>
     </Window.InputBindings> -->
     <Canvas x:Name="PlaygroundCanvas">
-        <c:BallMarker x:Name="ballMarker" Height="25" Width="25"
+        <c:BallMarker x:Name="ballMarker" Height="25" Width="25" Canvas.ZIndex="3"
                       Canvas.Top="{Binding Game.Ball.Position.Y, UpdateSourceTrigger=PropertyChanged}"
                       Canvas.Left="{Binding Game.Ball.Position.X, UpdateSourceTrigger=PropertyChanged}"/>
         

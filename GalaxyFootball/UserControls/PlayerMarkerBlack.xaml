@@ -11,7 +11,7 @@
     </UserControl.Resources>
     <Grid>
         <Ellipse Height="25" Width="25" 
-                 Fill="{Binding Player.IsSelected, Converter={StaticResource IsSelectedToStrokeAwayColorConverter}, UpdateSourceTrigger=PropertyChanged}" Opacity="0.6" />
+                 Fill="{Binding IsSelected, Converter={StaticResource IsSelectedToStrokeAwayColorConverter}, UpdateSourceTrigger=PropertyChanged}" Opacity="0.6" />
         <Label x:Name="lblNumber" Content="{Binding Number}" Foreground="White"  FontSize="10" VerticalAlignment="Top" Height="25" Margin="3,0,0,0"/>
     </Grid>
 </UserControl>
