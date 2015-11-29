@@ -2,93 +2,63 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:c="clr-namespace:GalaxyFootball.UserControls" 
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow" Height="700" Width="1050" 
         WindowStyle="None" ResizeMode="NoResize" MouseDoubleClick="Window_MouseDoubleClick" KeyDown="Window_KeyDown"
         >
     <Window.Background>
         <ImageBrush ImageSource="/Resources/image/grass.jpg"></ImageBrush>
     </Window.Background>
-
-    <Window.Resources>
-    </Window.Resources>
-    
     <!--<Window.InputBindings>
         <KeyBinding Command="{Binding ChangePlayerCommand}" Key="Q"></KeyBinding>
     </Window.InputBindings> -->
     <Canvas x:Name="PlaygroundCanvas">
-        <c:BallMarker x:Name="ballMarker" Height="25" Width="25" Canvas.ZIndex="3"
-                      Canvas.Top="{Binding Game.Ball.Position.Y, UpdateSourceTrigger=PropertyChanged}"
-                      Canvas.Left="{Binding Game.Ball.Position.X, UpdateSourceTrigger=PropertyChanged}"/>
-        
-        <Label Content="{Binding Score, UpdateSourceTrigger=PropertyChanged}" 
-               FontSize="14" Foreground="White" Canvas.Left="10" Canvas.Top="10" Width="250" Height="26"/>
-
-        <c:PlayerMarkerBlack x:Name="playerAwayMarker1" Height="45" Width="45" DataContext="{Binding Game.TeamAway.Players[0]}"
-                             Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <c:BallMarker Panel.ZIndex="3"  x:Name="ballMarker" Height="25" Width="25"
+                      Canvas.Top="{Binding Path=Game.Ball.Position.Y, UpdateSourceTrigger=PropertyChanged}"
+                      Canvas.Left="{Binding Path = Game.Ball.Position.X, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Content="{Binding Score, UpdateSourceTrigger=PropertyChanged}" FontSize="14" Foreground="White" Canvas.Left="10" Canvas.Top="10" Width="250" Height="26"/>
+        <c:PlayerMarkerBlack x:Name="playerAwayMarker1" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[0]}"
+        Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack x:Name="playerAwayMarker2" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[1]}"
-                             Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker3" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[2]}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker4" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[3]}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker5" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[4]}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker6" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[5]}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker7" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[6]}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker8" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[7]}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
         <c:PlayerMarkerBlack  x:Name="playerAwayMarker9" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[8]}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"/>
-        <c:PlayerMarkerBlack  x:Name="playerAwayMarker10" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[9], Mode=TwoWay}"
-                             Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerBlack  x:Name="playerAwayMarker11" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[10], Mode=TwoWay}"
-                              Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker1" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[0], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker2" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[1], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker3" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[2], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker4" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[3], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker5" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[4], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker6" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[5], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker7" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[6], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker8" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[7], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker9" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[8], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker10" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[9], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <c:PlayerMarkerRed  x:Name="playerHomeMarker11" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[10], Mode=TwoWay}"
-                            Canvas.Left="{Binding Path=Position.X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             Canvas.Top="{Binding Path=Position.Y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker10" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[9]}"
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerBlack  x:Name="playerAwayMarker11" Height="25" Width="25" DataContext="{Binding Game.TeamAway.Players[10]}"
+                              Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker1" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[0]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker2" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[1]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker3" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[2]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker4" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[3]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker5" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[4]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker6" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[5]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker7" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[6]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker8" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[7]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker9" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[8]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker10" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[9]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
+        <c:PlayerMarkerRed  x:Name="playerHomeMarker11" Height="25" Width="25" DataContext="{Binding Game.TeamHome.Players[10]}"
+                            Canvas.Left="{Binding Position.X}" Canvas.Top="{Binding Position.Y}"/>
     </Canvas>
 </Window>

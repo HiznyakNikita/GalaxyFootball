@@ -13,13 +13,13 @@ namespace GalaxyFootball.Helpers
     {
         public IControl CreateControl(IModel model)
         {
-            //if (model is PlayerMarkerVM)
-            //{
-            //    if ((model as PlayerMarkerVM).Player.Type.ToString().Contains("Home"))
-            //        return new PlayerMarkerRed(model);
-            //    else
-            //        return new PlayerMarkerBlack(model);
-            //}
+            if (model is PlayerMarkerVM)
+            {
+                if ((model as PlayerMarkerVM).Player.Type.ToString().Contains("Home"))
+                    return new PlayerMarkerRed(model);
+                else
+                    return new PlayerMarkerBlack(model);
+            }
            
             return null;
         }

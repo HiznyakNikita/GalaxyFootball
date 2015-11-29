@@ -40,6 +40,12 @@ namespace GalaxyFootball.UserControls
     /// </summary>
     public partial class PlayerMarkerRed : UserControl, IControl
     {
+        public PlayerMarkerRed(IModel model)
+        {
+            this.DataContext = model;
+            InitializeComponent();
+        }
+
         public PlayerMarkerRed()
         {
             InitializeComponent();
