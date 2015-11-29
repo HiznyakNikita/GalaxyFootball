@@ -514,25 +514,25 @@ namespace GalaxyFootball.Core.Concrete
                         {
                             if (isHorizontalRight)
                             {
-                                if (p.Position.X - Position.X > 50 && p.Position.Y - Position.Y > 50 && !CheckForIntersectionInZone(p))
+                                if (p.Position.X - Position.X > 30 && p.Position.Y - Position.Y > 30 && !CheckForIntersectionInZone(p))
                                     results.Add(p);
                             }
                             else if (isHorizontalLeft)
                             {
-                                if (p.Position.X - Position.X < -50 && p.Position.Y - Position.Y > 50 && !CheckForIntersectionInZone(p))
+                                if (p.Position.X - Position.X < -30 && p.Position.Y - Position.Y > 30 && !CheckForIntersectionInZone(p))
                                     results.Add(p);
                             }
-                            else if (p.Position.Y -  Position.Y > 50 && !CheckForIntersectionInZone(p))
+                            else if (p.Position.Y -  Position.Y > 30 && !CheckForIntersectionInZone(p))
                                 results.Add(p);
                         }
                         else if (isHorizontalRight)
                         {
-                            if (p.Position.X - Position.X > 50 && !CheckForIntersectionInZone(p))
+                            if (p.Position.X - Position.X > 30 && !CheckForIntersectionInZone(p))
                                 results.Add(p);
                         }
                         else if (isHorizontalLeft)
                         {
-                            if (p.Position.X - Position.X < -50 && !CheckForIntersectionInZone(p))
+                            if (p.Position.X - Position.X < -30 && !CheckForIntersectionInZone(p))
                                 results.Add(p);
                         }
                     }
@@ -555,16 +555,16 @@ namespace GalaxyFootball.Core.Concrete
                         < Math.Sqrt(Math.Abs(curMin.Position.X - Position.X) * Math.Abs(curMin.Position.X - Position.X)
                         + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y))) ? x : curMin));
                     if (resPlayer == null || resPlayer.Equals(this))
-                        resPlayer = FindNearestPlayer();
+                        resPlayer = FindNearestPlayerPass();
                     return resPlayer;
                 }
         }
 
-        public Player FindNearestPlayer()
+        public Player FindNearestPlayerPass()
         {
             Player res = this;
-            double xDif = 400;
-            double yDif = 400;
+            double xDif = 300;
+            double yDif = 300;
             if (Type.ToString().Contains("Home"))
             {
                 foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
@@ -580,6 +580,38 @@ namespace GalaxyFootball.Core.Concrete
                 {
                     if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
                         res = p;
+
+                }
+            }
+                return res;
+        }
+
+        public Player FindNearestPlayer()
+        {
+            Player res = this;
+            double xDif = 400;
+            double yDif = 400;
+            if (Type.ToString().Contains("Home"))
+            {
+                foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+                {
+                    res = GameEngine.CurrentGame.TeamHome.Players.Aggregate((curMin, x)
+                        => ((!x.Equals(this) && !curMin.Equals(this) && Math.Sqrt(Math.Abs(x.Position.X - Position.X) * Math.Abs(x.Position.X - Position.X)
+                        + Math.Abs(x.Position.Y - Position.Y) * Math.Abs(x.Position.Y - Position.Y))
+                        < Math.Sqrt(Math.Abs(curMin.Position.X - Position.X) * Math.Abs(curMin.Position.X - Position.X)
+                        + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y))) ? x : curMin));
+
+                }
+            }
+            else
+            {
+                foreach (var p in GameEngine.CurrentGame.TeamAway.Players)
+                {
+                    res = GameEngine.CurrentGame.TeamAway.Players.Aggregate((curMin, x)
+                        => ((!x.Equals(this) && !curMin.Equals(this) && Math.Sqrt(Math.Abs(x.Position.X - Position.X) * Math.Abs(x.Position.X - Position.X)
+                        + Math.Abs(x.Position.Y - Position.Y) * Math.Abs(x.Position.Y - Position.Y))
+                        < Math.Sqrt(Math.Abs(curMin.Position.X - Position.X) * Math.Abs(curMin.Position.X - Position.X)
+                        + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y))) ? x : curMin));
 
                 }
             }
