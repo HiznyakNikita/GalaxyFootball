@@ -247,8 +247,8 @@ namespace GalaxyFootball.Core.Concrete
                 if (ShootAccuracyPoints > 0 && ShootAccuracyPoints < 50)
                 {
                     double yFinishPos = r.Next(300, 398);
-                    double xFinishPos = Type.ToString().Contains("Away") ? 20 : 1030;
-                    while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
+                    double xFinishPos = Type.ToString().Contains("Away") ? 10 : 1030;
+                    while ((ball.Position.X > 20 && Type.ToString().Contains("Away"))
                                             || (Type.ToString().Contains("Home") && ball.Position.X != 1030) && ball.State == BallState.Shootted)
                     {
                         ball.State = BallState.Shootted;
@@ -260,9 +260,9 @@ namespace GalaxyFootball.Core.Concrete
                 if (ShootAccuracyPoints > 50 && ShootAccuracyPoints < 70)
                 {
                     double yFinishPos = r.Next(260, 430);
-                    double xFinishPos = Type.ToString().Contains("Away") ? 20 : 1030;
+                    double xFinishPos = Type.ToString().Contains("Away") ? 10 : 1030;
 
-                    while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
+                    while ((ball.Position.X > 20 && Type.ToString().Contains("Away"))
                         || (Type.ToString().Contains("Home") && ball.Position.X != 1030) && ball.State == BallState.Shootted)
                     {
                         ball.State = BallState.Shootted;
@@ -274,9 +274,9 @@ namespace GalaxyFootball.Core.Concrete
                 if (ShootAccuracyPoints > 70 && ShootAccuracyPoints < 100)
                 {
                     double yFinishPos = r.Next(233, 466);
-                    double xFinishPos = Type.ToString().Contains("Away") ? 20 : 1030;
+                    double xFinishPos = Type.ToString().Contains("Away") ? 10 : 1030;
 
-                    while ((ball.Position.X != 20 && Type.ToString().Contains("Away"))
+                    while ((ball.Position.X > 20 && Type.ToString().Contains("Away"))
                         || (Type.ToString().Contains("Home") && ball.Position.X < 1015) && ball.State == BallState.Shootted)
                     {
                         ball.State = BallState.Shootted;
@@ -331,9 +331,11 @@ namespace GalaxyFootball.Core.Concrete
 
         public void Pass(Ball ball, Player partner, bool isUp = false, bool isDown = false, bool isRight = false, bool isLeft = false)
         {
-            State = PlayerState.InAction;
-            //if(_actionThread != null && _actionThread.ThreadState != ThreadState.Aborted)
-            //    ;
+            if (GameEngine.CurrentGame.Ball.Owner.Equals(this))
+            {
+                State = PlayerState.InAction;
+                //if(_actionThread != null && _actionThread.ThreadState != ThreadState.Aborted)
+                //    ;
                 _isUp = isUp;
                 _isDown = isDown;
                 _isRight = isRight;
@@ -343,6 +345,7 @@ namespace GalaxyFootball.Core.Concrete
                     _actionThread = new Thread(new ParameterizedThreadStart(PassThreadMethod));
                     _actionThread.Start(new Tuple<Ball, Player>(ball, partner));
                 }
+            }
         }
 
         private void PassThreadMethod(object param)
@@ -361,8 +364,8 @@ namespace GalaxyFootball.Core.Concrete
                 while (!tuple.Item1.IsCanPick(tuple.Item2.Position))
                 {
                     if (Math.Abs(tuple.Item2.Position.X - xPos) >= 3)
-                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 5 + tuple.Item1.Position.X 
-                            : -5 + tuple.Item1.Position.X;
+                        xPos = tuple.Item2.Position.X > tuple.Item1.Position.X ? 3 + tuple.Item1.Position.X 
+                            : -3 + tuple.Item1.Position.X;
                     if (Math.Abs(tuple.Item2.Position.Y - yPos) >= 3)
                         yPos = CoordinateConverter.CalculateYIncrementator(Position, tuple.Item2.Position, xPos);
                     tuple.Item1.Position = new Point(xPos, yPos);
@@ -480,7 +483,7 @@ namespace GalaxyFootball.Core.Concrete
         {
             if(GameEngine.CurrentGame.Ball.Owner != null && GameEngine.CurrentGame.Ball.Owner.Equals(this))
             {
-                _position = new Point(_position.X-10, _position.Y-10);
+                _position = new Point(_position.X-30, _position.Y-30);
             }
         }
 
@@ -544,7 +547,9 @@ namespace GalaxyFootball.Core.Concrete
                         + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y)) ? x : curMin))
                         : GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault() != null
                         ? GameEngine.CurrentGame.TeamHome.Players.Where(p => p.CheckForIntersectionInZone(this)).FirstOrDefault()
-                        : FindNearestPlayer();
+                        : FindNearestPlayerPass();
+                    if (Math.Abs(resPlayer.Position.X - Position.X) < 30 || Math.Abs(resPlayer.Position.Y - Position.Y) < 30)
+                        resPlayer = FindNearestPlayerPass();
                     return resPlayer;
                 }
                 else
@@ -556,6 +561,8 @@ namespace GalaxyFootball.Core.Concrete
                         + Math.Abs(curMin.Position.Y - Position.Y) * Math.Abs(curMin.Position.Y - Position.Y))) ? x : curMin));
                     if (resPlayer == null || resPlayer.Equals(this))
                         resPlayer = FindNearestPlayerPass();
+                    if (Math.Abs(resPlayer.Position.X - Position.X) < 30 || Math.Abs(resPlayer.Position.Y - Position.Y) < 30)
+                        resPlayer = FindNearestPlayerPass();
                     return resPlayer;
                 }
         }
@@ -563,13 +570,14 @@ namespace GalaxyFootball.Core.Concrete
         public Player FindNearestPlayerPass()
         {
             Player res = this;
-            double xDif = 300;
-            double yDif = 300;
+            double xDif = 500;
+            double yDif = 500;
             if (Type.ToString().Contains("Home"))
             {
                 foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
                 {
-                    if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
+                    if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif
+                        && Math.Abs(p.Position.X - Position.X) >30 || Math.Abs(p.Position.Y - Position.Y) > 30 && !p.Type.ToString().Contains("Goalkeeper"))
                         res = p;
 
                 }
@@ -578,7 +586,8 @@ namespace GalaxyFootball.Core.Concrete
             {
                 foreach (var p in GameEngine.CurrentGame.TeamAway.Players)
                 {
-                    if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif)
+                    if (p != this && Math.Abs(p.Position.X - Position.X) < xDif && Math.Abs(p.Position.Y - Position.Y) < yDif
+                        && Math.Abs(p.Position.X - Position.X) > 30 && Math.Abs(p.Position.Y - Position.Y) > 30 && !p.Type.ToString().Contains("Goalkeeper"))
                         res = p;
 
                 }
@@ -625,6 +634,10 @@ namespace GalaxyFootball.Core.Concrete
 
         public void Reset()
         {
+            _isDown = false;
+            _isLeft = false;
+            _isRight = false;
+            _isUp = false;
             _position = new Point(_startPosition.X, _startPosition.Y);
             _isSelected = false;
             NotifyPropertyChanged("IsSelected");

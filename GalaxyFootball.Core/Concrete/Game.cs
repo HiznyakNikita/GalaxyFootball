@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GalaxyFootball.Core.Concrete
@@ -117,15 +118,19 @@ namespace GalaxyFootball.Core.Concrete
             }
             if (!isHomeScored)
             {
-                _ball.Owner = TeamHome.Players[6];
-                TeamHome.Players[6].IsSelected = true;
                 _ball.State = BallState.Controlled;
+                TeamHome.Players[6].IsSelected = true;
+                _ball.Owner = TeamHome.Players[6];
+                _ball.Position = new Point(_ball.Owner.Position.X,_ball.Owner.Position.Y);
+
             }
             else
             {
                 _ball.Owner = TeamAway.Players[6];
                 TeamHome.Players[4].IsSelected = true;
                 _ball.State = BallState.Controlled;
+                _ball.Position = new Point(_ball.Owner.Position.X, _ball.Owner.Position.Y);
+
             }
         }
 
@@ -143,17 +148,19 @@ namespace GalaxyFootball.Core.Concrete
             }
             if(isHomeSideOut)
             {
-                _ball.Owner = TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperHome).FirstOrDefault();
-                _ball.Owner.IsSelected = true;
+                TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperHome).FirstOrDefault().IsSelected = true;
+                _ball.Position = new Point(TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperHome).FirstOrDefault().Position.X,
+                    TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperHome).FirstOrDefault().Position.Y);
+                TeamHome.Players.Where(p => p.Type == PlayerType.GoalkeeperHome).FirstOrDefault().Pick(_ball);
                 _ball.State = BallState.Controlled;
-                _ball.Position = _ball.Owner.Position;
+                //_ball.Position = new Point(_ball.Owner.Position.X, _ball.Owner.Position.Y);
             }
             else
             {
                 _ball.Owner = TeamAway.Players.Where(p => p.Type == PlayerType.GoalkeeperAway).FirstOrDefault();
                 _ball.State = BallState.Controlled;
                 TeamHome.Players[4].IsSelected = true;
-                _ball.Position = _ball.Owner.Position;
+                _ball.Position = new Point(_ball.Owner.Position.X, _ball.Owner.Position.Y);
             }
         }
     }

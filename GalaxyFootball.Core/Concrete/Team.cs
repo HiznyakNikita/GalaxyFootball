@@ -86,5 +86,6 @@ namespace GalaxyFootball.Core.Concrete
             foreach (var p in _players)
                 p.Update(TeamStrategy);
         }
+
     }
 }

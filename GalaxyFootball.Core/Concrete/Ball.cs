@@ -20,6 +20,7 @@ namespace GalaxyFootball.Core
         private Thread _thread;
         private Point _position;
         private bool _isOutOfPlayground = false;
+        private bool _isGoalScored = false;
 
         public Ball()
         {
@@ -55,61 +56,75 @@ namespace GalaxyFootball.Core
             }
             set
             {
-                    if (value.X < 20 || value.Y < 20)
-                    {
                         if (value.X < 20)
                         {
+                            _position.X = value.X;
                             if (value.Y < 396 && value.Y > 304)
                             {
+                                _position.Y = value.Y;
                                 State = BallState.Outed;
-                                OnGoalScored();
-                                _isOutOfPlayground = true;
+                                _isGoalScored = true;
                             }
                             else
                             {
+                                if (value.Y < 20)
+                                    _position.Y = 20;
+                                else
+                                    _position.Y = value.Y;
+
+                                if (value.Y > 680)
+                                    _position.Y = 680;
+                                else
+                                    _position.Y = value.Y;
                                 State = BallState.Outed;
-                                OnOutOfPlayground();
                                 _isOutOfPlayground = true;
                             }
+                           
+                        }
+
+                        else if (value.X > 1010)
+                        {
+                            _position.X = value.X;
+                            if (value.Y < 396 && value.Y > 304)
+                            {
+                                _position.Y = value.Y;
+
+                                State = BallState.Outed;
+                                _isGoalScored = true;
+                            }
+                            else
+                            {
+                                if (value.Y < 20)
+                                    _position.Y = 20;
+                                else
+                                    _position.Y = value.Y;
+
+                                if (value.Y > 680)
+                                    _position.Y = 680;
+                                else
+                                    _position.Y = value.Y;
+                                State = BallState.Outed;
+                                _isOutOfPlayground = true;
+                            }
+                            
                         }
                         else
                         {
                             _isOutOfPlayground = false;
+                            _isGoalScored = false;
                             _position.X = value.X;
-                        }
-                        if (value.Y < 20)
-                            _position.Y = 20;
-                        else
-                            _position.Y = value.Y;
-                    }
-                    else
-                    {
-                        if (value.Y > 680)
-                            _position.Y = 680;
-                        else
-                            _position.Y = value.Y;
-                        if (value.X > 1010)
-                        {
-                            if (value.Y < 396 && value.Y > 304)
-                            {
-                                State = BallState.Outed;
-                                OnGoalScored();
-                                _isOutOfPlayground = true;
-                            }
+                            if (value.Y < 20)
+                                _position.Y = 20;
                             else
-                            {
-                                State = BallState.Outed;
-                                OnOutOfPlayground();
-                                _isOutOfPlayground = true;
-                            }
+                                _position.Y = value.Y;
+
+                            if (value.Y > 680)
+                                _position.Y = 680;
+                            else
+                                _position.Y = value.Y;
                         }
-                        else
-                        {
-                            _isOutOfPlayground = false;
-                            _position.X = value.X;
-                        }
-                    }
-                    if (!_isOutOfPlayground)
+                        
+                    if (!_isOutOfPlayground && !_isGoalScored)
                     {
                         _thread = new Thread(new ThreadStart(Notify));
                         try
@@ -127,6 +142,21 @@ namespace GalaxyFootball.Core
                         }
                         OnPositionChanged();
                         NotifyPropertyChanged("Position");
+                    }
+                    else
+                    {
+                        if (_isGoalScored)
+                        {
+                            _isGoalScored = false;
+
+                            OnGoalScored();
+                        }
+                        else if (_isOutOfPlayground)
+                        {
+                            _isOutOfPlayground = false;
+
+                            OnOutOfPlayground();
+                        }
                     }
                 }
         }
@@ -146,12 +176,10 @@ namespace GalaxyFootball.Core
             if (GoalScored != null)
             {
                 bool isHomeScored = false;
-                if (Owner.Type.ToString().Contains("Home") && Owner.Type == PlayerType.GoalkeeperHome)
-                    isHomeScored = false;
-                else if (Owner.Type.ToString().Contains("Home") && Owner.Type != PlayerType.GoalkeeperHome)
+
+                if (Owner.Type.ToString().Contains("Home") && Owner.Type != PlayerType.GoalkeeperHome)
                     isHomeScored = true;
-                else
-                    isHomeScored = false;
+
                 GoalScored(this, new GoalScoredEventArgs(isHomeScored,Owner));
             }
         }
@@ -208,17 +236,17 @@ namespace GalaxyFootball.Core
 
         public void Reset()
         {
-            _position = new Point(510, 349);
+            _position = new Point(525, 349);
             Owner = null;
             _thread.Abort();
         }
 
         public void Pick()
         {
-            foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
-                p.AbortCurrentAction();
-            foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
-                p.AbortCurrentAction();
+            //foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+            //    p.AbortCurrentAction();
+            //foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+            //    p.AbortCurrentAction();
             State = BallState.Controlled;
             _position = new Point(Owner.Position.X, Owner.Position.Y);
             _thread.Abort();
