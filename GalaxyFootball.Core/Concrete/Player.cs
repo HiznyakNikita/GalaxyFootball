@@ -276,8 +276,8 @@ namespace GalaxyFootball.Core.Concrete
                     double yFinishPos = r.Next(233, 466);
                     double xFinishPos = Type.ToString().Contains("Away") ? 10 : 1030;
 
-                    while ((ball.Position.X > 20 && Type.ToString().Contains("Away"))
-                        || (Type.ToString().Contains("Home") && ball.Position.X < 1015) && ball.State == BallState.Shootted)
+                    while ((ball.Position.X > 20 && Type.ToString().Contains("Away") && ball.State == BallState.Shootted)
+                        || ((Type.ToString().Contains("Home") && ball.Position.X < 1015) && ball.State == BallState.Shootted))
                     {
                         ball.State = BallState.Shootted;
                         double xPos = Type.ToString().Contains("Home") ? ShootPowerPoints / 15  + ball.Position.X: - ShootPowerPoints / 15 + ball.Position.X;
@@ -316,7 +316,8 @@ namespace GalaxyFootball.Core.Concrete
             {
                 ball.State = BallState.Controlled;
 
-                ball.Owner.LoseBall();
+                if(ball.Owner != null)
+                    ball.Owner.LoseBall();
                 ball.Owner = this;
                 ball.Pick();
             }
@@ -325,7 +326,13 @@ namespace GalaxyFootball.Core.Concrete
                 _position = new Point(_startPosition.X, _startPosition.Y);
             }
 
-            ;
+            if(Type.ToString().Contains("Home"))
+            {
+                foreach (var p in GameEngine.CurrentGame.TeamHome.Players)
+                    p.Reset();
+                IsSelected = true;
+                NotifyPropertyChanged("IsSelected");
+            }
             State = PlayerState.Free;
         }
 

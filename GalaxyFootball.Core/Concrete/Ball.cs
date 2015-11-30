@@ -173,6 +173,7 @@ namespace GalaxyFootball.Core
 
         protected virtual void OnGoalScored()
         {
+            State = BallState.Outed; 
             if (GoalScored != null)
             {
                 bool isHomeScored = false;
@@ -186,6 +187,7 @@ namespace GalaxyFootball.Core
 
         protected virtual void OnOutOfPlayground()
         {
+            State = BallState.Outed;
             if (OutOfPlayground != null)
             {
                 bool isHomeSideOut = true;
@@ -236,9 +238,10 @@ namespace GalaxyFootball.Core
 
         public void Reset()
         {
+            _thread.Abort();
+
             _position = new Point(525, 349);
             Owner = null;
-            _thread.Abort();
         }
 
         public void Pick()

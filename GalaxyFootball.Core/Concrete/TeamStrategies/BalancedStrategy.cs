@@ -660,7 +660,7 @@ namespace GalaxyFootball.Core.Concrete.TeamStrategies
                 {
                     if (GameEngine.CurrentGame.Ball.Position.X > player.Position.X)
                     {
-                        newPosition.X = -player.SpeedPoints / (Double)200 + newPosition.X;
+                        newPosition.X = player.SpeedPoints / (Double)200 + newPosition.X;
                         newPosition.Y = player.Position.Y < GameEngine.CurrentGame.Ball.Position.Y ? player.SpeedPoints / (Double)200 + newPosition.Y
                             : -player.SpeedPoints / (Double)200 + newPosition.Y;
                     }
